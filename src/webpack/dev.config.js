@@ -1,7 +1,15 @@
 const path = require('path');
 const webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+
+//postcss_config
+const postConfig = [
+  require('autoprefixer')(),
+  require('postcss-cssnext')()
+];
+
+//项目配置
 const config = require('./config')[process.env.NODE_ENV];
 const utils = require('./utils');
 
@@ -31,7 +39,7 @@ module.exports = {
           loaders: {
             css: 'vue-style-loader?sourceMap!css-loader?sourceMap'
           },
-          postcss: [ autoprefixer() ]
+          postcss: postConfig
         }
       },
       {
@@ -55,9 +63,7 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               ident: 'postcss',
-              plugins: [
-                autoprefixer()
-              ],
+              plugins: postConfig,
               sourceMap: true
             }
           }
@@ -90,13 +96,14 @@ module.exports = {
 
   },
 
+  //webpack-dev-server开启
   devServer: {
     contentBase: config.outputDir,
-    port: 9000
+    port: config.port
   },
 
   resolve: {
-    extensions: ['.js', '.vue'],
+    extensions: [ '.js', '.vue' ],
     alias: {
       'assets': path.resolve(__dirname, '../assets'),
       'libs': path.resolve(__dirname, '../libs'),
@@ -108,6 +115,22 @@ module.exports = {
     //定义环境变量
     new webpack.DefinePlugin({
       __MODE__: JSON.stringify(process.env.NODE_ENV)
+    }),
+
+    // 作用域提升，优化模块闭包的包裹数量，减少bundle的体积
+    new webpack.optimize.ModuleConcatenationPlugin(),
+
+    //稳定moduleId，避免引入了一个新模块后，导致模块ID变更使得vender和common的hash变化缓存失效
+    new webpack.NamedModulesPlugin(),
+
+    //稳定chunkId
+    //避免异步加载chunk(或减少chunk)，导致的chunkId变化（做持久化缓存）
+    new webpack.NamedChunksPlugin((chunk) => {
+      if (chunk.name) {
+        return chunk.name;
+      }
+
+      return chunk.mapModules(m => path.relative(m.context, m.request)).join("_");
     }),
 
     // 抽取通用代码
@@ -132,18 +155,17 @@ module.exports = {
       }
     }),
 
+    //将有webpack-runtime相关的代码抽离成manifest，持久化存储vender
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      chunks: ['vendor']
+    }),
+
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
         drop_console: true
       }
-    }),
-
-    // extract webpack runtime and module manifest to its own file in order to
-    // prevent vendor hash from being updated whenever app bundle is updated
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      chunks: ['vendor']
     }),
 
     // Make sure that the plugin is after any plugins that add images
@@ -168,6 +190,9 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin(),
 
     //html-Templlate
-    ...htmlPlugins
+    ...htmlPlugins,
+
+    //用于将manifest文件内联在html中，以减少一个请求
+    new HtmlWebpackInlineSourcePlugin()
   ]
 };

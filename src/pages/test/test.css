@@ -1,4 +1,21 @@
-.hello {
-  color: red;
-  box-sizing: border-box;
+.set-footer-to-bottom-container {
+  display: flex;
+  flex-flow: column;
+  min-height: calc(100vh - 80px);
+}
+
+.set-footer-to-bottom-content {
+  flex: 1;
+}
+
+header {
+  width: 100vw;
+  height: 80px;
+  background-color: black;
+}
+
+footer {
+  width: 100vw;
+  height: 100px;
+  background-color: black;
 }

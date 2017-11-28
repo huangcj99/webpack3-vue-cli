@@ -1,8 +1,15 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const autoprefixer = require('autoprefixer');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+
+//postcss_config
+const postConfig = [
+  require('autoprefixer')(),
+  require('postcss-cssnext')()
+];
+
 const config = require('./config')[process.env.NODE_ENV];
 const utils = require('./utils');
 
@@ -35,7 +42,7 @@ module.exports = {
               fallback: 'vue-style-loader'
             })
           },
-          postcss: [ autoprefixer() ]
+          postcss: postConfig
         }
       },
       {
@@ -53,9 +60,7 @@ module.exports = {
               loader: 'postcss-loader',
               options: {
                 ident: 'postcss',
-                plugins: [
-                  autoprefixer()
-                ]
+                plugins: postConfig
               }
             }
           ]
@@ -86,7 +91,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: [ '.js', '.vue'],
+    extensions: [ '.js', '.vue' ],
     alias: {
       'assets': path.resolve(__dirname, '../assets'),
       'libs': path.resolve(__dirname, '../libs'),
@@ -105,10 +110,15 @@ module.exports = {
       allChunks: true
     }),
 
-    //稳定moduleId，避免引入了一个新模块后，导致模块ID变更使得vender和common的hash变化缓存失效
+    // 作用域提升，优化模块闭包的包裹数量，减少bundle的体积
+    new webpack.optimize.ModuleConcatenationPlugin(),
+
+    //稳定moduleId
+    //避免引入了一个新模块后,导致模块ID变更使得vender和common的hash变化后缓存失效
     new webpack.HashedModuleIdsPlugin(),
 
     //稳定chunkId
+    //避免异步加载chunk(或减少chunk)，导致的chunkId变化（做持久化缓存）
     new webpack.NamedChunksPlugin((chunk) => {
       if (chunk.name) {
         return chunk.name;
@@ -128,7 +138,7 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks(module, count) {
-        // any required modules inside node_modules are extracted to vendor
+        //node_modules中被依赖的模块将被打包进vender
         return (
           module.resource &&
           /\.js$/.test(module.resource) &&
@@ -145,12 +155,12 @@ module.exports = {
       chunks: ['vendor']
     }),
 
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: true,
-        drop_console: true
-      }
-    }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress: {
+    //     warnings: false,
+    //     drop_console: true
+    //   }
+    // }),
 
     // Make sure that the plugin is after any plugins that add images
     // These are the default options:
@@ -174,6 +184,9 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin(),
 
     //html模板配置
-    ...htmlPlugins
+    ...htmlPlugins,
+
+    //用于将manifest文件内联在html中，以减少一个请求
+    new HtmlWebpackInlineSourcePlugin()
   ]
 };

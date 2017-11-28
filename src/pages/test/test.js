@@ -1,7 +1,9 @@
+import 'assets/css/reset.css'
 import './test.css'
 import Vue from 'vue'
 import App from './components/app.vue'
-import Libs from 'libs/nicEdit.js'
+// import Libs from 'libs/nicEdit.js'
+// import Libs from 'libs/test-libs.js'
 
 new Vue({
   el: '#app',

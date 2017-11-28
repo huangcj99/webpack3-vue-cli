@@ -64,6 +64,7 @@ const getHtmlPlugins = (pages, entries) => {
         filename: `${pathname}.html`,
         favicon: 'assets/imgs/favicon.ico',
         template: pages[pathname], // 模板路径
+        inlineSource:  'manifest',  //内联manifest，减少一个请求
         inject: true, // js插入位置
         minify: {
           minifyJS: true
