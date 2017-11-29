@@ -20,8 +20,7 @@ const htmlPlugins = utils.getHtmlPlugins(pages, entries);
 const chunks = Object.keys(entries);
 
 module.exports = {
-  // devtool: '#eval-source-map',
-  devtool: false,
+  devtool: '#eval-source-map',
 
   entry: entries,
 
