@@ -1,0 +1,31 @@
+## 一、快速开始
+
+### 安装
+```shell
+$ git clone git@github.com:smallcatcat-joe/webpack3-demo.git
+```
+#### 项目的目录结构如下：
+```shell
+├── bin # 部署脚本
+|
+├── build # 编译输出
+|
+├── src # 源文件目录
+|   ├── assets # 网站公共资源以及全局css
+|   |
+|   ├── components # 公共组件
+|   |
+|   ├── libs # 库
+|   |
+|   ├── pages # 页面
+|   |
+|   ├── static # 静态资源
+|   |
+|   ├── webpack
+|   |   ├── config # api 目录
+|   |   ├── dev.config.js # 本地开发配置
+|   |   ├── test.config.js # 测试配置
+|   |   ├── prod.config.js # 线上配置
+|   |   ├── utils.js # 多入口html模板装配工具
+|   |
+```
