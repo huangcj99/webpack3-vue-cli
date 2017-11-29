@@ -7,7 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
  * @param    {[type]}                pages   [description]
  * @param    {[type]}                entries [description]
  * @return   {[type]}                [description]
- * @datetime 2017-7-27T16:58:57+080
+ * @datetime 2017-11-21T16:58:57+080
  * @author smallcatcat<smallcatcat.joe@gmail.com>
  */
 const getEntry = (globPath, exclude) => {
@@ -50,7 +50,7 @@ const getEntry = (globPath, exclude) => {
  * @param    {[type]}                pages   [description]
  * @param    {[type]}                entries [description]
  * @return   {[type]}                [description]
- * @datetime 2017-7-27T16:58:57+080
+ * @datetime 2017-11-21T16:58:57+080
  * @author smallcatcat<smallcatcat.joe@gmail.com>
  */
 const getHtmlPlugins = (pages, entries) => {
