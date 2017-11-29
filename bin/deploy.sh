@@ -1,10 +1,14 @@
 #!/bin/bash
+
+#脚本demo
 serverStaticPath="fun:~/test-scp/"
 
 cd ../src
 
 echo "开始安装依赖"
 npm install
+
+# 实际上还需要让打包者输入分支再进行打包
 
 echo "开始打包"
 npm run prod
