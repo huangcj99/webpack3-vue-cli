@@ -29,3 +29,19 @@ $ git clone git@github.com:smallcatcat-joe/webpack3-demo.git
 |   |   ├── utils.js # 多入口html模板装配工具
 |   |
 ```
+
+### 运行
+
+#### 1. 本地开发
+
+```shell
+$ cd src
+$ npm install #安装依赖
+$ npm run dev #启动webpack-dev-server进行开发
+```
+
+#### 2. 线上打包（与测试打包相同）
+
+```shell
+$ npm run prod
+```
