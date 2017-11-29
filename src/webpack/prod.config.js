@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 //postcss_config
 const postConfig = [
@@ -13,6 +14,7 @@ const postConfig = [
 const config = require('./config')[process.env.NODE_ENV];
 const utils = require('./utils');
 
+//html模板配置
 const entries = utils.getEntry('./pages/**/*.js');
 const pages = utils.getEntry('./pages/**/*.html');
 const htmlPlugins = utils.getHtmlPlugins(pages, entries);
@@ -38,7 +40,7 @@ module.exports = {
         options: {
           loaders: {
             css: ExtractTextPlugin.extract({
-              use: [ 'css-loader' ],
+              use: [ 'css-loader?minimize' ],
               fallback: 'vue-style-loader'
             })
           },
@@ -55,7 +57,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: ExtractTextPlugin.extract({
           use: [
-            'css-loader',
+            'css-loader?minimize',
             {
               loader: 'postcss-loader',
               options: {
@@ -155,12 +157,22 @@ module.exports = {
       chunks: ['vendor']
     }),
 
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false,
-    //     drop_console: true
-    //   }
-    // }),
+    //命令行参数使用--optimize-minimize，开启tree-shaking精简没有使用到的module
+    //同时，.babelrc的modules设置为false
+    new UglifyJSPlugin({
+      uglifyOptions: {
+        warnings: false,  //删除没有用到的代码时不输出警告
+        output: {
+          beautify: false,  //最紧凑的输出
+          comments: false  //删除注释
+        },
+        compress: {
+          drop_console: true,  //删除打印
+          collapse_vars: true,   //内嵌定义了但是只用到一次的变量
+          reduce_vars: true,  //提取出出现多次但是没有定义成变量去引用的静态值
+        }
+      }
+    }),
 
     // Make sure that the plugin is after any plugins that add images
     // These are the default options:

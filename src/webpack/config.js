@@ -8,6 +8,11 @@ const config = {
     publicPath: '/'
   },
 
+  test: {
+    outputDir: path.join(__dirname, '../../build'),
+    publicPath: '/'
+  },
+
   production: {
     outputDir: path.join(__dirname, '../../build'),
     publicPath: '/'

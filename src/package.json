@@ -1,8 +1,14 @@
 {
   "name": "webpack3-demo",
   "version": "1.0.0",
+  "author": "smallcatcat.joe@gmail.com",
   "description": "webpack3",
   "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=dev webpack-dev-server --open --host 0.0.0.0 --watch-poll --hot --config webpack/dev.config.js --progress --colors",
+    "test": "cross-env NODE_ENV=test webpack --config webpack/test.config.js --optimize-minimize --progress --colors --hide-modules --display-error-details",
+    "prod": "cross-env NODE_ENV=production webpack --config webpack/prod.config.js --optimize-minimize --progress --colors --hide-modules --display-error-details"
+  },
   "browserslist": [
     "> 5%",
     "last 4 versions"
@@ -30,16 +36,13 @@
     "postcss-cssnext": "^3.0.2",
     "postcss-loader": "^2.0.9",
     "style-loader": "^0.19.0",
+    "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^0.6.2",
     "vue-loader": "^13.5.0",
     "vue-template-compiler": "^2.5.8",
     "webpack": "^3.8.1",
-    "webpack-dev-server": "~2.7.1"
+    "webpack-dev-server": "~2.7.1",
+    "webpack-module-hot-accept": "^1.0.5"
   },
-  "scripts": {
-    "prod": "cross-env NODE_ENV=dev webpack --config webpack/prod.config.js --progress --colors --hide-modules --display-error-details",
-    "dev": "cross-env NODE_ENV=dev webpack-dev-server --open --config webpack/dev.config.js"
-  },
-  "author": "smallcatcat.joe@gmail.com",
   "license": "ISC"
 }

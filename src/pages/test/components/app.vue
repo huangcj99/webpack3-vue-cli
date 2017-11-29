@@ -3,15 +3,31 @@
     <p class="blur">123
       <span>{{ test }}</span>
     </p>
+    <div class="">
+      123
+    </div>
+    <div class="">
+    </div>
+    <Hello></Hello>
   </div>
 </template>
 
 <script>
+  import Hello from './hello.vue'
+
   export default {
     data() {
       return {
-        test: '-----'
+        test: '----asdasda',
+        a: '123677'
       }
+    },
+    mounted() {
+      console.log('................');
+      this.test = '123'
+    },
+    components: {
+      Hello
     }
   }
 </script>
@@ -25,17 +41,18 @@
   }
 }
 
-.blur {
-  filter: blur(4px);
-}
 
 .content {
   height: 200px;
+
+  & p {
+    /*@apply --color;*/
+    color: red;
+    font-size: 30px;
+  }
 }
 
-p {
-  @apply --color;
-}
+
 
 
 </style>
