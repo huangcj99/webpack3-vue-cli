@@ -1,19 +1,21 @@
 const path = require('path');
 const webpack = require('webpack');
-// const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 //postcss_config
 const postConfig = [
-  require('autoprefixer')(),
-  require('postcss-cssnext')()
+  require('autoprefixer')(),  //前缀兼容
+  require('postcss-cssnext')() //下一代CSS提案
 ];
 
-//项目配置
 const config = require('./config')[process.env.NODE_ENV];
 const utils = require('./utils');
 
-const entries = utils.getEntry('./pages/**/*.js');
-const pages = utils.getEntry('./pages/**/*.html');
+const entries = utils.getEntry('./src/pages/**/*.js');
+const pages = utils.getEntry('./src/pages/**/*.html');
 const htmlPlugins = utils.getHtmlPlugins(pages, entries);
 const chunks = Object.keys(entries);
 
@@ -24,8 +26,8 @@ module.exports = {
 
   output: {
     path: config.outputDir,
-    filename: '[name].js',
-    chunkFilename: '[name].chunk.js',
+    filename: '[name].[chunkhash].js',
+    chunkFilename: '[name].[chunkhash].chunk.js',
     publicPath: config.publicPath
   },
 
@@ -36,7 +38,10 @@ module.exports = {
         loader: 'vue-loader',
         options: {
           loaders: {
-            css: 'vue-style-loader?sourceMap!css-loader?sourceMap'
+            css: ExtractTextPlugin.extract({
+              use: [ 'css-loader' ],
+              fallback: 'vue-style-loader'
+            })
           },
           postcss: postConfig
         }
@@ -44,39 +49,28 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: [
-          'babel-loader',
-          'webpack-module-hot-accept'  //保证js入口文件可以使用HMR
-        ]
+        loader: 'babel-loader'
       },
       {
         test: /\.css$/,
         exclude: /node_modules/,
-        use: [
-          {
-            loader: 'style-loader',
-            options: { sourceMap: true }
-          },
-          {
-            loader: 'css-loader',
-            options: { sourceMap: true }
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              ident: 'postcss',
-              plugins: postConfig,
-              sourceMap: true
+        loader: ExtractTextPlugin.extract({
+          use: [
+            'css-loader',
+            {
+              loader: 'postcss-loader',
+              options: {
+                ident: 'postcss',
+                plugins: postConfig
+              }
             }
-          }
-        ]
+          ]
+        })
       },
       {
         test: /\.css$/,
         include: /node_modules/,
-        use: [
-          'style-loader', 'css-loader'
-        ]
+        loader: ExtractTextPlugin.extract('css-loader')
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?\S*)?$/,
@@ -95,22 +89,14 @@ module.exports = {
         loader: 'file-loader?name=[name].[ext]'
       }
     ]
-
-  },
-
-  //webpack-dev-server开启
-  //热加载和host修复已在命令行参数传入, 这里不需要再配置
-  devServer: {
-    port: config.port,
-    contentBase: config.outputDir
   },
 
   resolve: {
     extensions: [ '.js', '.vue' ],
     alias: {
-      'assets': path.resolve(__dirname, '../assets'),
-      'libs': path.resolve(__dirname, '../libs'),
-      'components': path.resolve(__dirname,'../components')
+      'assets': path.resolve(__dirname, '../src/assets'),
+      'libs': path.resolve(__dirname, '../src/libs'),
+      'components': path.resolve(__dirname,'../src/components')
     }
   },
 
@@ -120,11 +106,17 @@ module.exports = {
       __MODE__: JSON.stringify(process.env.NODE_ENV)
     }),
 
+    //抽离CSS
+    new ExtractTextPlugin('[name].[contenthash].css', {
+      allChunks: true
+    }),
+
     // 作用域提升，优化模块闭包的包裹数量，减少bundle的体积
     new webpack.optimize.ModuleConcatenationPlugin(),
 
-    //稳定moduleId，避免引入了一个新模块后，导致模块ID变更使得vender和common的hash变化缓存失效
-    new webpack.NamedModulesPlugin(),
+    //稳定moduleId
+    //避免引入了一个新模块后,导致模块ID变更使得vender和common的hash变化后缓存失效
+    new webpack.HashedModuleIdsPlugin(),
 
     //稳定chunkId
     //避免异步加载chunk(或减少chunk)，导致的chunkId变化（做持久化缓存）
@@ -136,18 +128,18 @@ module.exports = {
       return chunk.mapModules(m => path.relative(m.context, m.request)).join("_");
     }),
 
-    // 抽取通用代码
+    // 引用数超过2次的模块将抽取到common中
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common',
       chunks,
       minChunks: 2
     }),
 
-    // 公共库会被抽离到vendor.js里
+    // 将node_modules抽离到vendor.js里
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks(module, count) {
-        // any required modules inside node_modules are extracted to vendor
+        //node_modules中被依赖的模块将被打包进vender
         return (
           module.resource &&
           /\.js$/.test(module.resource) &&
@@ -164,13 +156,37 @@ module.exports = {
       chunks: ['vendor']
     }),
 
+    //命令行参数使用--optimize-minimize，开启tree-shaking精简没有使用到的module
+    //同时，babel的modules设置为false
+    new UglifyJSPlugin({
+      sourceMap: true //devtool开启了sourceMap，不开启则报错
+    }),
+
+    // Make sure that the plugin is after any plugins that add images
+    // These are the default options:
+    new ImageminPlugin({
+      disable: false,
+      optipng: {
+        optimizationLevel: 3
+      },
+      gifsicle: {
+        optimizationLevel: 1
+      },
+      jpegtran: {
+        progressive: false
+      },
+      svgo: {},
+      pngquant: null, // pngquant is not run unless you pass options here
+      plugins: []
+    }),
+
     // 允许错误不打断程序
     new webpack.NoEmitOnErrorsPlugin(),
 
-    //html-Templlate
+    //html模板配置
     ...htmlPlugins,
 
-    // //用于将manifest文件内联在html中，以减少一个请求
-    // new HtmlWebpackInlineSourcePlugin()
+    //用于将manifest文件内联在html中，以减少一个请求
+    new HtmlWebpackInlineSourcePlugin()
   ]
 };

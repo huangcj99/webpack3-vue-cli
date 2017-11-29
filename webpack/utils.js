@@ -34,6 +34,7 @@ const getEntry = (globPath, exclude) => {
     tmp.pop();
     tmp.shift();
     tmp.shift();
+    tmp.shift();
 
     if (tmp[tmp.length - 1] === basename) {
       tmp = tmp.join('/');
@@ -62,7 +63,7 @@ const getHtmlPlugins = (pages, entries) => {
       // 配置生成的html文件，定义路径等
       const conf = {
         filename: `${pathname}.html`,
-        favicon: 'assets/imgs/favicon.ico',
+        favicon: 'src/assets/imgs/favicon.ico',
         template: pages[pathname], // 模板路径
         inlineSource:  'manifest',  //内联manifest，减少一个请求
         inject: true, // js插入位置

@@ -4,17 +4,17 @@ const path = require('path');
 const config = {
   dev: {
     port: 9000,
-    outputDir: path.join(__dirname, '../../build'),
+    outputDir: path.join(__dirname, '../build'),
     publicPath: '/'
   },
 
   test: {
-    outputDir: path.join(__dirname, '../../build'),
+    outputDir: path.join(__dirname, '../build'),
     publicPath: '/'
   },
 
   production: {
-    outputDir: path.join(__dirname, '../../build'),
+    outputDir: path.join(__dirname, '../build'),
     publicPath: '/'
   }
 };

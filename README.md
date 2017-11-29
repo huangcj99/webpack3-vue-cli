@@ -18,16 +18,14 @@ $ git clone git@github.com:smallcatcat-joe/webpack3-demo.git
 |   ├── libs # 库
 |   |
 |   ├── pages # 页面
-|   |
-|   ├── static # 静态资源
-|   |
-|   ├── webpack
-|   |   ├── config # api 目录
-|   |   ├── dev.config.js # 本地开发配置
-|   |   ├── test.config.js # 测试配置
-|   |   ├── prod.config.js # 线上配置
-|   |   ├── utils.js # 多入口html模板装配工具
-|   |
+|   
+├── webpack
+|   ├── config # api 目录
+|   ├── dev.config.js # 本地开发配置
+|   ├── test.config.js # 测试配置
+|   ├── prod.config.js # 线上配置
+|   ├── utils.js # 多入口html模板装配工具
+|
 ```
 
 ### 运行

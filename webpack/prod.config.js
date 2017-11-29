@@ -7,20 +7,21 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 //postcss_config
 const postConfig = [
-  require('autoprefixer')(),  //前缀兼容
-  require('postcss-cssnext')() //下一代CSS提案
+  require('autoprefixer')(),
+  require('postcss-cssnext')()
 ];
 
 const config = require('./config')[process.env.NODE_ENV];
 const utils = require('./utils');
 
-const entries = utils.getEntry('./pages/**/*.js');
-const pages = utils.getEntry('./pages/**/*.html');
+//html模板配置
+const entries = utils.getEntry('./src/pages/**/*.js');
+const pages = utils.getEntry('./src/pages/**/*.html');
 const htmlPlugins = utils.getHtmlPlugins(pages, entries);
 const chunks = Object.keys(entries);
 
 module.exports = {
-  devtool: '#eval-source-map',
+  devtool: false,
 
   entry: entries,
 
@@ -39,7 +40,7 @@ module.exports = {
         options: {
           loaders: {
             css: ExtractTextPlugin.extract({
-              use: [ 'css-loader' ],
+              use: [ 'css-loader?minimize' ],
               fallback: 'vue-style-loader'
             })
           },
@@ -56,7 +57,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: ExtractTextPlugin.extract({
           use: [
-            'css-loader',
+            'css-loader?minimize',
             {
               loader: 'postcss-loader',
               options: {
@@ -94,9 +95,9 @@ module.exports = {
   resolve: {
     extensions: [ '.js', '.vue' ],
     alias: {
-      'assets': path.resolve(__dirname, '../assets'),
-      'libs': path.resolve(__dirname, '../libs'),
-      'components': path.resolve(__dirname,'../components')
+      'assets': path.resolve(__dirname, '../src/assets'),
+      'libs': path.resolve(__dirname, '../src/libs'),
+      'components': path.resolve(__dirname,'../src/components')
     }
   },
 
@@ -157,8 +158,21 @@ module.exports = {
     }),
 
     //命令行参数使用--optimize-minimize，开启tree-shaking精简没有使用到的module
-    //同时，babel的modules设置为false
-    new UglifyJSPlugin(),
+    //同时，.babelrc的modules设置为false
+    new UglifyJSPlugin({
+      uglifyOptions: {
+        warnings: false,  //删除没有用到的代码时不输出警告
+        output: {
+          beautify: false,  //最紧凑的输出
+          comments: false  //删除注释
+        },
+        compress: {
+          drop_console: true,  //删除打印
+          collapse_vars: true,   //内嵌定义了但是只用到一次的变量
+          reduce_vars: true,  //提取出出现多次但是没有定义成变量去引用的静态值
+        }
+      }
+    }),
 
     // Make sure that the plugin is after any plugins that add images
     // These are the default options:
