@@ -49,8 +49,10 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader'
+        loader: 'babel-loader',
+        include: [
+          path.join(__dirname, '../src')
+        ]
       },
       {
         test: /\.css$/,
@@ -94,6 +96,11 @@ module.exports = {
 
   resolve: {
     extensions: [ '.js', '.vue' ],
+    //优先搜索src下的libs目录
+    modules: [
+      path.resolve(__dirname, "../src/libs"),
+      "node_modules"
+    ],
     alias: {
       'assets': path.resolve(__dirname, '../src/assets'),
       'libs': path.resolve(__dirname, '../src/libs'),
@@ -102,6 +109,8 @@ module.exports = {
   },
 
   plugins: [
+
+
     //定义环境变量
     new webpack.DefinePlugin({
       __MODE__: JSON.stringify(process.env.NODE_ENV)

@@ -5,8 +5,7 @@ serverStaticPath="fun:~/test-scp/"
 
 cd ../src
 
-echo "开始安装依赖"
-npm install
+rm -rf build/
 
 # 实际上还需要让打包者输入分支再进行打包
 

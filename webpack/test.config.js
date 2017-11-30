@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
+const ManifestPlugin = require('webpack-manifest-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
@@ -48,8 +49,10 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader'
+        loader: 'babel-loader',
+        include: [
+          path.join(__dirname, '../src')
+        ]
       },
       {
         test: /\.css$/,
@@ -93,6 +96,11 @@ module.exports = {
 
   resolve: {
     extensions: [ '.js', '.vue' ],
+    //优先搜索src下的libs目录
+    modules: [
+      path.resolve(__dirname, "../src/libs"),
+      "node_modules"
+    ],
     alias: {
       'assets': path.resolve(__dirname, '../src/assets'),
       'libs': path.resolve(__dirname, '../src/libs'),
@@ -185,6 +193,9 @@ module.exports = {
 
     //html模板配置
     ...htmlPlugins,
+
+    //添加manifest.json文件在输出根目录(用于查看路径映射)
+    new ManifestPlugin(),
 
     //用于将manifest文件内联在html中，以减少一个请求
     new HtmlWebpackInlineSourcePlugin()

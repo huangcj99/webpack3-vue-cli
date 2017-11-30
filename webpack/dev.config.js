@@ -43,10 +43,12 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
         use: [
           'babel-loader',
           'webpack-module-hot-accept'  //保证js入口文件可以使用HMR
+        ],
+        include: [
+          path.join(__dirname, '../src')
         ]
       },
       {
@@ -102,11 +104,18 @@ module.exports = {
   //热加载和host修复已在命令行参数传入, 这里不需要再配置
   devServer: {
     port: config.port,
-    contentBase: config.outputDir
+    contentBase: config.outputDir,
+    noInfo: true, //隐藏启动信息和保存信息
+    watchContentBase: true,  //文件改动将触发整个页面重新加载
   },
 
   resolve: {
     extensions: [ '.js', '.vue' ],
+    //优先搜索src下的libs目录
+    modules: [
+      path.resolve(__dirname, "../src/libs"),
+      "node_modules"
+    ],
     alias: {
       'assets': path.resolve(__dirname, '../src/assets'),
       'libs': path.resolve(__dirname, '../src/libs'),
