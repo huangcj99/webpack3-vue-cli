@@ -43,3 +43,10 @@ $ npm run dev #启动webpack-dev-server进行开发
 ```shell
 $ npm run prod
 ```
+
+#### 3. 可进入bin文件夹下执行脚本打包
+
+```shell
+$ cd bin
+$ sh deploy.sh (./deploy.sh 需要修改该文件的权限为可执行)
+```
