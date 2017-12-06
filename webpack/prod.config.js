@@ -1,9 +1,10 @@
+const os = require('os');
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const UglifyJsParallelPlugin = require('webpack-uglify-parallel');
 
 //postcss_config
 const postConfig = [
@@ -168,18 +169,20 @@ module.exports = {
 
     //命令行参数使用--optimize-minimize，开启tree-shaking精简没有使用到的module
     //同时，.babelrc的modules设置为false
-    new UglifyJSPlugin({
-      uglifyOptions: {
+    //多线程执行压缩
+    new UglifyJsParallelPlugin({
+      workers: os.cpus().length,
+      mangle: true,
+      exclude: /\.min\.js$/,
+      output: {
+        beautify: false,  //最紧凑的输出
+        comments: false  //删除注释
+      },
+      compress: {
         warnings: false,  //删除没有用到的代码时不输出警告
-        output: {
-          beautify: false,  //最紧凑的输出
-          comments: false  //删除注释
-        },
-        compress: {
-          drop_console: true,  //删除打印
-          collapse_vars: true,   //内嵌定义了但是只用到一次的变量
-          reduce_vars: true,  //提取出出现多次但是没有定义成变量去引用的静态值
-        }
+        drop_console: true,  //删除打印
+        collapse_vars: true,   //内嵌定义了但是只用到一次的变量
+        reduce_vars: true,  //提取出出现多次但是没有定义成变量去引用的静态值
       }
     }),
 

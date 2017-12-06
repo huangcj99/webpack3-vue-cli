@@ -5,7 +5,8 @@
   "description": "webpack3",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev webpack-dev-server --open --host 0.0.0.0 --watch-poll --hot --config webpack/dev.config.js --progress --colors --inline",
+    "dll": "webpack --config webpack/dll.config.js",
+    "dev": "cross-env NODE_ENV=dev webpack-dev-server --host 0.0.0.0 --watch-poll --hot --config webpack/dev.config.js --progress --colors --inline",
     "test": "cross-env NODE_ENV=test webpack --config webpack/test.config.js --optimize-minimize --progress --colors --hide-modules --display-error-details",
     "prod": "cross-env NODE_ENV=production webpack --config webpack/prod.config.js --optimize-minimize --progress --colors --hide-modules --display-error-details"
   },
@@ -29,6 +30,7 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.5",
     "glob": "^7.1.2",
+    "html-webpack-include-assets-plugin": "^1.0.2",
     "html-webpack-inline-source-plugin": "0.0.9",
     "html-webpack-plugin": "^2.30.1",
     "imagemin-webpack-plugin": "^1.5.2",
@@ -42,7 +44,8 @@
     "webpack": "^3.8.1",
     "webpack-dev-server": "~2.7.1",
     "webpack-manifest-plugin": "^1.3.2",
-    "webpack-module-hot-accept": "^1.0.5"
+    "webpack-module-hot-accept": "^1.0.5",
+    "webpack-uglify-parallel": "^0.1.4"
   },
   "license": "ISC"
 }

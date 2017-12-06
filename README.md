@@ -35,8 +35,8 @@ $ git clone git@github.com:smallcatcat-joe/webpack3-demo.git
 #### 1. 本地开发
 
 ```shell
-$ cd src
 $ npm install #安装依赖
+$ npm run dll #生成dll文件，以至于开发时不需要重复打包vender，加载打包速度
 $ npm run dev #启动webpack-dev-server进行开发
 ```
 

@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-// const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 
 //postcss_config
 const postConfig = [
@@ -105,7 +105,6 @@ module.exports = {
   devServer: {
     port: config.port,
     contentBase: config.outputDir,
-    noInfo: true, //隐藏启动信息和保存信息
     watchContentBase: true,  //文件改动将触发整个页面重新加载
   },
 
@@ -152,25 +151,17 @@ module.exports = {
       minChunks: 2
     }),
 
-    // 公共库会被抽离到vendor.js里
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks(module, count) {
-        // any required modules inside node_modules are extracted to vendor
-        return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf(
-            path.join(__dirname, '../node_modules')
-          ) === 0
-        );
-      }
+    //指导webpack打包业务代码时，使用预先打包好的vender.dll.js
+    new webpack.DllReferencePlugin({
+        context: __dirname,
+        manifest: require('../build/vendor-manifest.json'),
     }),
 
-    //将有webpack-runtime相关的代码抽离成manifest，持久化存储vender
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      chunks: ['vendor']
+    //给每一个入口添加打包好的vender.dll.js
+    new HtmlWebpackIncludeAssetsPlugin({
+        assets: ['vendor.dll.js'],
+        append: false,  //在body尾部的第一条引入
+        hash: true
     }),
 
     // 允许错误不打断程序
@@ -178,8 +169,5 @@ module.exports = {
 
     //html-Templlate
     ...htmlPlugins,
-
-    // //用于将manifest文件内联在html中，以减少一个请求
-    // new HtmlWebpackInlineSourcePlugin()
   ]
 };
