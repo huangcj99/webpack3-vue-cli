@@ -36,8 +36,10 @@ $ git clone git@github.com:smallcatcat-joe/webpack3-demo.git
 
 ```shell
 $ npm install #安装依赖
-$ npm run dll #生成dll文件，以至于开发时不需要重复打包vender，加载打包速度
+$ npm run dll #生成dll文件（加快开发时的编译速度）
 $ npm run dev #启动webpack-dev-server进行开发
+
+注意：dll需要人工维护，如果增加了文件依赖，需要重新打包一份dll
 ```
 
 #### 2. 线上打包（与测试打包相同）
