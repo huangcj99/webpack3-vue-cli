@@ -1,14 +1,8 @@
 import 'assets/css/reset.css'
-import './test.css'
+import './test0.css'
 import Vue from 'vue'
 import App from './components/app.vue'
-// import router from 'vue-router'
-// import vuex from 'vuex'
 // import Axios from 'axios'
-
-// console.log(router);
-// console.log('---');
-// console.log(vuex);
 
 new Vue({
   el: '#app',

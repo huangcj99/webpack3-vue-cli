@@ -5,8 +5,6 @@
 </template>
 
 <script>
-  import router from 'vue-router'
-  
   export default {
     data() {
       return {}

@@ -8,7 +8,7 @@
     "dll": "webpack --config webpack/dll.config.js",
     "dev": "cross-env NODE_ENV=dev webpack-dev-server --host 0.0.0.0 --watch-poll --hot --config webpack/dev.config.js --progress --colors --inline",
     "test": "cross-env NODE_ENV=test webpack --config webpack/test.config.js --optimize-minimize --progress --colors --hide-modules --display-error-details",
-    "prod": "cross-env NODE_ENV=production webpack --config webpack/prod.config.js --optimize-minimize --progress --colors --hide-modules --display-error-details"
+    "prod": "cross-env NODE_ENV=production webpack --optimize-minimize --config webpack/prod.config.js --progress --colors --hide-modules --display-error-details"
   },
   "browserslist": [
     "> 5%",
@@ -16,7 +16,9 @@
   ],
   "dependencies": {
     "axios": "^0.17.1",
-    "vue": "^2.5.8"
+    "vue": "^2.5.8",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.6",

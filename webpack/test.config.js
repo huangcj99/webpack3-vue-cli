@@ -14,11 +14,14 @@ const postConfig = [
 
 const config = require('./config')[process.env.NODE_ENV];
 const utils = require('./utils');
+const vendors = require('./basic-vendor.config.js');
 
 const entries = utils.getEntry('./src/pages/**/*.js');
 const pages = utils.getEntry('./src/pages/**/*.html');
 const htmlPlugins = utils.getHtmlPlugins(pages, entries);
 const chunks = Object.keys(entries);
+//基础库打包（持久化缓存，node_modules下的其他不是经常使用的包统一打包到common）
+entries['vendor'] = vendors
 
 module.exports = {
   devtool: '#eval-source-map',
@@ -119,7 +122,7 @@ module.exports = {
       allChunks: true
     }),
 
-    // 作用域提升，优化模块闭包的包裹数量，减少bundle的体积
+    //作用域提升，优化模块闭包的包裹数量，减少bundle的体积
     new webpack.optimize.ModuleConcatenationPlugin(),
 
     //稳定moduleId
@@ -136,26 +139,16 @@ module.exports = {
       return chunk.mapModules(m => path.relative(m.context, m.request)).join("_");
     }),
 
-    // 引用数超过2次的模块将抽取到common中
+    //引用数超过2次的模块将抽取到common中
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common',
       chunks,
       minChunks: 2
     }),
 
-    // 将node_modules抽离到vendor.js里
+    //将入口配置的基础库抽离到vendor.js里，其余的node_module中的库抽取到common中
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks(module, count) {
-        //node_modules中被依赖的模块将被打包进vender
-        return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf(
-            path.join(__dirname, '../node_modules')
-          ) === 0
-        );
-      }
+      name: 'vendor'
     }),
 
     //将有webpack-runtime相关的代码抽离成manifest，持久化存储vender
@@ -170,8 +163,7 @@ module.exports = {
       sourceMap: true //devtool开启了sourceMap，不开启则报错
     }),
 
-    // Make sure that the plugin is after any plugins that add images
-    // These are the default options:
+    //图片优化
     new ImageminPlugin({
       disable: false,
       optipng: {
