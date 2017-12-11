@@ -4,7 +4,7 @@
 
 ### 安装
 ```shell
-$ git clone git@github.com:smallcatcat-joe/webpack3-cli.git
+$ git clone git@github.com:smallcatcat-joe/webpack3-vue-cli.git
 ```
 #### 项目的目录结构如下：
 ```shell
