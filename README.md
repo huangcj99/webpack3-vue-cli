@@ -4,7 +4,7 @@
 
 ### 安装
 ```shell
-$ git clone git@github.com:smallcatcat-joe/webpack3-demo.git
+$ git clone git@github.com:smallcatcat-joe/webpack3-cli.git
 ```
 #### 项目的目录结构如下：
 ```shell
@@ -13,14 +13,19 @@ $ git clone git@github.com:smallcatcat-joe/webpack3-demo.git
 ├── build # 编译输出
 |
 ├── src # 源文件目录
-|   ├── assets # 网站公共资源以及全局css
-|   |
-|   ├── components # 公共组件
-|   |
-|   ├── libs # 库
+|   ├── assets # 网站公共资源以及全局css
+|   |
+|   ├── components # 公共组件
+|   |
+|   ├── libs # 库（团队编写的库可以放置于此）
 |   |
 |   ├── pages # 页面
-|   
+|         ├── test # 页面文件夹
+|               ├── components # 存放vue单文件
+|               ├── test.html # 模板html，名字与文件夹保持一致（用于配置html-plugin的输出配置）
+|               ├── test.js # 入口，名字与文件夹保持一致（用于配置html-plugin的输出配置）
+|               ├── test.css # css文件用于非单文件css编写
+| 
 ├── webpack
 |   ├── config # api 目录
 |   ├── dll.config.js #  用于打包开发vendor.dll.js的配置文件
