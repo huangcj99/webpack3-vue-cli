@@ -25,7 +25,7 @@ $ git clone git@github.com:smallcatcat-joe/webpack3-vue-cli.git
 |               ├── test.html # 模板html，名字与文件夹保持一致（用于配置html-plugin的输出配置）
 |               ├── test.js # 入口，名字与文件夹保持一致（用于配置html-plugin的输出配置）
 |               ├── test.css # css文件用于非单文件css编写
-| 
+|
 ├── webpack
 |   ├── config # api 目录
 |   ├── dll.config.js #  用于打包开发vendor.dll.js的配置文件
@@ -43,10 +43,13 @@ $ git clone git@github.com:smallcatcat-joe/webpack3-vue-cli.git
 
 ```shell
 $ npm install #安装依赖
-$ npm run dll #生成dll文件（加快开发时的编译速度）
-$ npm run dev #启动webpack-dev-server进行开发
+$ npm run start # 会根据依赖的增减判断是否需要重新创建dll文件
+```
 
-注意：dll需要人工维护，如果增加了文件依赖，需要重新打包一份dll
+注：若提示模块缺失, 可删除build文件夹，手动重新构建dll
+```shell
+$ npm run dll
+$ npm run dev
 ```
 
 #### 2. 线上打包（与测试打包相同，测试包，不涉及压缩，用于测试环境下调试）

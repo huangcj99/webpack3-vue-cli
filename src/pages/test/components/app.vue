@@ -14,13 +14,11 @@
 
 <script>
   import Hello from './hello.vue'
-  import router from 'vue-router'
 
   export default {
     data() {
       return {
         test: '----asdasda',
-        a: '123677'
       }
     },
     mounted() {
