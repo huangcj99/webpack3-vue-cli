@@ -106,12 +106,7 @@ module.exports = {
     port: config.port,
     contentBase: config.outputDir,
     watchContentBase: true,  //文件改动将触发整个页面重新加载
-    proxy: {
-      '/api/**': {
-        target: "http://dev.api.cer.dingdingyisheng.mobi",
-        changeOrigin: true
-      }
-    }
+    proxy: config.proxy
   },
 
   resolve: {

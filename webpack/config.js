@@ -5,7 +5,13 @@ const config = {
   dev: {
     port: 9000,
     outputDir: path.join(__dirname, '../build'),
-    publicPath: '/'
+    publicPath: '/',
+    proxy: {
+      '/api/**': {
+        target: "http://dev.api.cer.dingdingyisheng.mobi",
+        changeOrigin: true
+      }
+    }
   },
 
   test: {
