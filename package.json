@@ -17,6 +17,7 @@
     "last 4 versions"
   ],
   "dependencies": {
+    "amfe-flexible": "^2.2.1",
     "axios": "^0.17.1",
     "vue": "^2.5.8"
   },

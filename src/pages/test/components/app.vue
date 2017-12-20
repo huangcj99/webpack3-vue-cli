@@ -14,6 +14,7 @@
 
 <script>
   import Hello from './hello.vue'
+  import axios from 'axios'
 
   export default {
     data() {
@@ -24,6 +25,11 @@
     mounted() {
       console.log('................');
       this.test = '123'
+
+      axios.get('/api/base/clinical-project/595f33aac0c77d4db333ce53')
+        .then((res) => {
+          console.log(res);
+        })
     },
     components: {
       Hello

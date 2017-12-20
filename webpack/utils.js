@@ -71,7 +71,10 @@ const getHtmlPlugins = (pages, entries) => {
           minifyJS: true
         },
         chunks: ['manifest', 'vendor', 'common'],
-        chunksSortMode: 'dependency'
+        chunksSortMode: 'dependency',
+        components: {
+          flexible: '/script_components/amfe-flexible/2.2.1/index.js'
+        }
       };
 
       if (pathname in entries) {
