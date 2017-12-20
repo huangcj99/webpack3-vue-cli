@@ -41,6 +41,7 @@ const getEntry = (globPath, exclude) => {
       pathname = `${tmp}/${basename}`; // 正确输出js和html的路径
       entries[pathname] = entry;
     }
+
   });
 
   return entries;
@@ -73,7 +74,7 @@ const getHtmlPlugins = (pages, entries) => {
         chunks: ['manifest', 'vendor', 'common'],
         chunksSortMode: 'dependency',
         components: {
-          flexible: '/script_components/amfe-flexible/2.2.1/index.js'
+          flexible: '/script_components/lib-flexible/1.0.0/index.js'
         }
       };
 
