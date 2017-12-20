@@ -6,18 +6,19 @@
   "main": "index.js",
   "scripts": {
     "dll": "webpack --config webpack/dll.config.js",
+    "predev": "sh bin/cp-script-components.sh",
     "dev": "cross-env NODE_ENV=dev webpack-dev-server --host 0.0.0.0 --watch-poll --config webpack/dev.config.js --progress --colors --inline",
+    "start": "sh bin/dev.sh",
     "test": "cross-env NODE_ENV=test webpack --config webpack/test.config.js --progress --colors --hide-modules --display-error-details",
     "preprod": "sh bin/clean-build.sh",
     "prod": "cross-env NODE_ENV=production webpack --optimize-minimize --config webpack/prod.config.js --progress --colors --hide-modules --display-error-details",
-    "start": "sh bin/dev.sh"
+    "postprod": "sh bin/cp-script-components.sh"
   },
   "browserslist": [
     "> 5%",
     "last 4 versions"
   ],
   "dependencies": {
-    "amfe-flexible": "^2.2.1",
     "axios": "^0.17.1",
     "vue": "^2.5.8"
   },
