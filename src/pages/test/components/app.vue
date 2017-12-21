@@ -4,7 +4,7 @@
       <span>{{ test }}</span>
     </p>
     <div class="">
-   asd asd as d
+   asd asd
     </div>
     <div class="">
     </div>
@@ -17,19 +17,19 @@
   import axios from 'axios'
 
   export default {
-    data() {
+    data () {
       return {
-        test: '----asdasda',
+        test: '----ssss'
       }
     },
-    mounted() {
-      console.log('................');
+    mounted () {
+      console.log('................')
       this.test = '123'
 
-      // axios.get('/api/base/clinical-project/595f33aac0c77d4db333ce53')
-      //   .then((res) => {
-      //     console.log(res);
-      //   })
+      axios.get('/api/base/clinical-project/595f33aac0c77d4db333ce53')
+        .then((res) => {
+          console.log(res)
+        })
     },
     components: {
       Hello

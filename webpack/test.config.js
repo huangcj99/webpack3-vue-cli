@@ -6,20 +6,16 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
-//postcss_config
-const postConfig = [
-  require('autoprefixer')(),  //前缀兼容
-  require('postcss-cssnext')() //下一代CSS提案
-];
-
 const config = require('./config')[process.env.NODE_ENV];
 const utils = require('./utils');
 const vendors = require('./basic-vendor.config.js');
+const postConfig = require('./postcss.config');
 
 const entries = utils.getEntry('./src/pages/**/*.js');
 const pages = utils.getEntry('./src/pages/**/*.html');
 const htmlPlugins = utils.getHtmlPlugins(pages, entries);
 const chunks = Object.keys(entries);
+
 //基础库打包（持久化缓存，node_modules下的其他不是经常使用的包统一打包到common）
 entries['vendor'] = vendors
 
@@ -38,12 +34,22 @@ module.exports = {
   module: {
     rules: [
       {
+        enforce: 'pre',
+        test: /\.(vue|js)$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
           loaders: {
             css: ExtractTextPlugin.extract({
               use: [ 'css-loader' ],
+              fallback: 'vue-style-loader'
+            }),
+            scss: ExtractTextPlugin.extract({
+              use: [ 'css-loader?minimize', 'sass-loader' ],
               fallback: 'vue-style-loader'
             })
           },
@@ -77,6 +83,23 @@ module.exports = {
         test: /\.css$/,
         include: /node_modules/,
         loader: ExtractTextPlugin.extract('css-loader')
+      },
+      {
+        test: /\.scss/,
+        exclude: /node_modules/,
+        loader: ExtractTextPlugin.extract({
+          use: [
+            'css-loader',
+            'sass-loader',
+            {
+              loader: 'postcss-loader',
+              options: {
+                ident: 'postcss',
+                plugins: postConfig
+              }
+            }
+          ]
+        })
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?\S*)?$/,

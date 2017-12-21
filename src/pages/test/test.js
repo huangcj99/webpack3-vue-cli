@@ -1,38 +1,39 @@
 import 'assets/css/reset.css'
 import './test.css'
+import './test.scss'
 import Vue from 'vue'
 import App from './components/app.vue'
 
-
+/* eslint no-new: "off" */
 new Vue({
   el: '#app',
   render: h => h(App)
-});
+})
 
-async function test() {
+async function test () {
   let a = await new Promise((resolve, reject) => {
-            setTimeout(() => {
-              resolve(123);
-            }, 2000)
-          });
-
-  console.log(a);
-
-  let b = await new Promise((resolve, reject) => {
-    setTimeout(() => resolve(3444444444), 2000);
+    setTimeout(() => {
+      resolve(123)
+    }, 2000)
   })
 
-  console.log(b);
+  console.log(a)
+
+  let b = await new Promise((resolve, reject) => {
+    setTimeout(() => resolve(3444444444), 2000)
+  })
+
+  console.log(b)
 }
 
-test();
+test()
 
 class Test2 {
-  a() {
-    console.log('aaaaaaa');
+  a () {
+    console.log('aaaaaaa')
   }
 }
 
-const aaa = new Test2();
+const aaa = new Test2()
 
-aaa.a();
+aaa.a()

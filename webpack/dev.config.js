@@ -2,15 +2,10 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 
-//postcss_config
-const postConfig = [
-  require('autoprefixer')(),
-  require('postcss-cssnext')()
-];
-
 //项目配置
 const config = require('./config')[process.env.NODE_ENV];
 const utils = require('./utils');
+const postConfig = require('./postcss.config');
 
 const entries = utils.getEntry('./src/pages/**/*.js');
 const pages = utils.getEntry('./src/pages/**/*.html');
@@ -32,11 +27,18 @@ module.exports = {
   module: {
     rules: [
       {
+        enforce: 'pre',
+        test: /\.(vue|js)$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
           loaders: {
-            css: 'vue-style-loader?sourceMap!css-loader?sourceMap'
+            css: 'vue-style-loader?sourceMap!css-loader?sourceMap',
+            scss: 'vue-style-loader?sourceMap!css-loader?sourceMap!sass-loader?sourceMap'
           },
           postcss: postConfig
         }
@@ -44,8 +46,7 @@ module.exports = {
       {
         test: /\.js$/,
         use: [
-          'babel-loader',
-          'webpack-module-hot-accept'  //保证js入口文件可以使用HMR
+          'babel-loader'
         ],
         include: [
           path.join(__dirname, '../src')
@@ -81,6 +82,32 @@ module.exports = {
         ]
       },
       {
+        test: /\.scss/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'style-loader',
+            options: { sourceMap: true }
+          },
+          {
+            loader: 'css-loader',
+            options: { sourceMap: true }
+          },
+          {
+            loader: 'sass-loader',
+            options: { sourceMap: true }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: postConfig,
+              sourceMap: true
+            }
+          }
+        ]
+      },
+      {
         test: /\.(png|jpe?g|gif|svg)(\?\S*)?$/,
         use: [
           {
@@ -101,7 +128,6 @@ module.exports = {
   },
 
   //webpack-dev-server开启
-  //热加载和host修复已在命令行参数传入, 这里不需要再配置
   devServer: {
     port: config.port,
     contentBase: config.outputDir,
