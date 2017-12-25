@@ -180,11 +180,11 @@ module.exports = {
       chunks: ['vendor']
     }),
 
-    //命令行参数使用--optimize-minimize，开启tree-shaking精简没有使用到的module
-    //同时，babel的modules设置为false
-    new UglifyJSPlugin({
-      sourceMap: true //devtool开启了sourceMap，不开启则报错
-    }),
+    // //命令行参数使用--optimize-minimize，开启tree-shaking精简没有使用到的module
+    // //同时，babel的modules设置为false
+    // new UglifyJSPlugin({
+    //   sourceMap: true //devtool开启了sourceMap，不开启则报错
+    // }),
 
     //图片优化
     new ImageminPlugin({

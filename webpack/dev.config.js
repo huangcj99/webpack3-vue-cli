@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
+const WriteFilePlugin = require('write-file-webpack-plugin');
 
 //项目配置
 const config = require('./config')[process.env.NODE_ENV];
@@ -150,6 +151,9 @@ module.exports = {
   },
 
   plugins: [
+    // 将文件同步输出到build
+    new WriteFilePlugin(),
+
     //定义环境变量
     new webpack.DefinePlugin({
       __MODE__: JSON.stringify(process.env.NODE_ENV)

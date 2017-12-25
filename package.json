@@ -61,7 +61,8 @@
     "webpack-dev-server": "~2.7.1",
     "webpack-manifest-plugin": "^1.3.2",
     "webpack-module-hot-accept": "^1.0.5",
-    "webpack-uglify-parallel": "^0.1.4"
+    "webpack-uglify-parallel": "^0.1.4",
+    "write-file-webpack-plugin": "^4.2.0"
   },
   "license": "ISC"
 }
