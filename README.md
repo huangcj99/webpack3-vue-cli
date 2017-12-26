@@ -140,7 +140,7 @@ src/libs下放置团队根据业务编写的模块，src/components放置公共�
 
 ```
 $ npm run dll
-$ npm run dev
+$ npm run dev  (删除package.json中script中的predev, 因为包含bash脚本)
 ```
 
 因无法用bash，只能手动维护dll文件，如果需要用到script_components需要自己复制到build中，路径参照webpack/utils.js中的多入口html模板配置
