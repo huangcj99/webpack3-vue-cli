@@ -84,18 +84,14 @@ $ npm run start # 会根据依赖的增减判断是否需要重新创建dll文�
 #### 2. 线上打包（与测试打包相同，测试包，不涉及压缩，用于测试环境下调试）
 
 ```
-
 $ npm run prod
-
 ```
 
 #### 3. 可进入bin文件夹下执行脚本打包，使用scp发送至测试服务器（自行编写）
 
 ```
-
 $ cd bin
 $ sh deploy.sh (./deploy.sh 需要修改该文件的权限为可执行)
-
 ```
 
 ### 移动端适配方案
@@ -141,18 +137,15 @@ $ sh deploy.sh (./deploy.sh 需要修改该文件的权限为可执行)
 
 ```
 $ npm run lint
-
 ```
 
 ### 打包方案(适用于持续迭代)
 
 #### 将node_modules下的库分成两类
 ```
-
 1.vendor（如：vue，axios等，在增量开发时，此类模块打包成vendor做持久化存储）
 
 2.common 在迭代的时候引入的模块(不常用，但是需要打包的，统一打包到common中，与src/libs自己写的模块做统一打包配置)
-
 ```
 src/libs下放置团队根据业务编写的模块，src/components放置公共组件，统一打包到common中
 
@@ -165,7 +158,6 @@ src/libs下放置团队根据业务编写的模块，src/components放置公共�
 ```
 $ npm run dll
 $ npm run dev
-
 ```
 
 因无法用bash，只能手动维护dll文件，如果需要用到script_components需要自己复制到build中，路径参照webpack/utils.js中的多入口html模板配置
@@ -173,8 +165,6 @@ $ npm run dev
 #### 打包
 
 ```
-
 $ npm run uglify (手动压缩并输出script_components到build中)
 $ npm run prod (删除package.json中script中的preprod, 因为包含bash脚本)
-
 ```
