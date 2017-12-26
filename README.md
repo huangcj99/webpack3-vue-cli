@@ -1,4 +1,4 @@
-# webpack3-vue
+# webpack3搭建vue脚手架，移动端
 
 ## 一、环境搭建
 ### [Node](https://nodejs.org/) 安装
