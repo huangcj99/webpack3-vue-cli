@@ -73,7 +73,7 @@ $ git clone git@github.com:smallcatcat-joe/webpack3-vue-cli.git
 
 #### 1. 本地开发
 
-```shell
+```
 $ npm install #安装依赖
 $ npm run start # 会根据依赖的增减判断是否需要重新创建dll文件
 ```
@@ -83,15 +83,19 @@ $ npm run start # 会根据依赖的增减判断是否需要重新创建dll文�
 
 #### 2. 线上打包（与测试打包相同，测试包，不涉及压缩，用于测试环境下调试）
 
-```shell
+```
+
 $ npm run prod
+
 ```
 
 #### 3. 可进入bin文件夹下执行脚本打包，使用scp发送至测试服务器（自行编写）
 
-```shell
+```
+
 $ cd bin
 $ sh deploy.sh (./deploy.sh 需要修改该文件的权限为可执行)
+
 ```
 
 ### 移动端适配方案
@@ -137,6 +141,7 @@ $ sh deploy.sh (./deploy.sh 需要修改该文件的权限为可执行)
 
 ```
 $ npm run lint
+
 ```
 
 ### 打包方案(适用于持续迭代)
@@ -148,9 +153,8 @@ $ npm run lint
 
 2.common 在迭代的时候引入的模块(不常用，但是需要打包的，统一打包到common中，与src/libs自己写的模块做统一打包配置)
 
-src/libs下放置团队根据业务编写的模块，src/components放置公共组件，统一打包到common中
-
 ```
+src/libs下放置团队根据业务编写的模块，src/components放置公共组件，统一打包到common中
 
 注：需要打进vender包的库，可在vender.config.js文件中配置，此方案vendor打包的库版本最好在package.json设为指定版本（版本变更可能会导致vendor hash值变化）
 
@@ -162,8 +166,9 @@ src/libs下放置团队根据业务编写的模块，src/components放置公共�
 $ npm run dll
 $ npm run dev
 
-因无法用bash，只能手动维护dll文件，如果需要用到script_components需要自己复制到build中，路径参照webpack/utils.js中的多入口html模板配置
 ```
+
+因无法用bash，只能手动维护dll文件，如果需要用到script_components需要自己复制到build中，路径参照webpack/utils.js中的多入口html模板配置
 
 #### 打包
 
