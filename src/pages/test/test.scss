@@ -1,7 +1,7 @@
 .set-footer-to-bottom-container {
   display: flex;
   flex-flow: column;
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 100px);
 }
 
 .set-footer-to-bottom-content {
@@ -10,7 +10,7 @@
 
 header {
   width: 100vw;
-  height: 80px;
+  height: 100px;
   font-size: 20px;/*px*/
   background-color: #f5f5f5;
 }

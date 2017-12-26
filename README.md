@@ -7,21 +7,6 @@
 
 推荐使用 [nvm](https://github.com/creationix/nvm) 管理 Node 版本
 
-### [ESLint](http://eslint.org/) 配置
-
-> 使用 ESLint 进行代码风格检测
-
-需要安装对应使用的编辑器的 ESLint 插件
-
-1. Sublime - [SublimeLinter-eslint](https://github.com/roadhump/SublimeLinter-eslint)
-2. Atom - [linter-eslint](https://github.com/AtomLinter/linter-eslint)
-
-### [EditorConfig](http://editorconfig.org/) 配置
-
-> 使用 editorConfig 保证不同编辑器代码风格一致
-
-请根据 [Plugin](http://editorconfig.org/#download) 文档安装对应编辑器插件
-
 ## 二、快速开始
 
 ### 本地开发/测试环境打包/线上环境打包
@@ -59,8 +44,8 @@ $ git clone git@github.com:smallcatcat-joe/webpack3-vue-cli.git
 |
 ├── webpack
 |   ├── config # api 目录 （接口转发配置）
-|   ├── dll.config.js #  用于打包开发vendor.dll.js的配置文件(本地开发时，避免重复编译vender，节省时间)
-|   ├── vendor.config.js # 线上打包的vender列表
+|   ├── dll.config.js #  用于打包开发vendor.dll.js的配置文件(本地开发时，避免重复编译vendor，节省时间)
+|   ├── vendor.config.js # 线上打包的vendor列表
 |   ├── dev.config.js # 本地开发配置
 |   ├── test.config.js # 测试配置
 |   ├── prod.config.js # 线上配置
@@ -147,7 +132,7 @@ $ npm run lint
 ```
 src/libs下放置团队根据业务编写的模块，src/components放置公共组件，统一打包到common中
 
-注：需要打进vender包的库，可在vender.config.js文件中配置，此方案vendor打包的库版本最好在package.json设为指定版本（版本变更可能会导致vendor hash值变化）
+注：需要打进vendor包的库，可在vendor.config.js文件中配置，此方案vendor打包的库版本最好在package.json设为指定版本（版本变更可能会导致vendor hash值变化）
 
 ### window下（无bash命令行工具）
 

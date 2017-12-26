@@ -163,7 +163,7 @@ module.exports = {
     // 作用域提升，优化模块闭包的包裹数量，减少bundle的体积
     new webpack.optimize.ModuleConcatenationPlugin(),
 
-    //稳定moduleId，避免引入了一个新模块后，导致模块ID变更使得vender和common的hash变化缓存失效
+    //稳定moduleId，避免引入了一个新模块后，导致模块ID变更使得vendor和common的hash变化缓存失效
     new webpack.NamedModulesPlugin(),
 
     //稳定chunkId
@@ -183,13 +183,13 @@ module.exports = {
       minChunks: 2
     }),
 
-    //指导webpack打包业务代码时，使用预先打包好的vender.dll.js
+    //指导webpack打包业务代码时，使用预先打包好的vendor.dll.js
     new webpack.DllReferencePlugin({
         context: __dirname,
         manifest: require('../build/vendor-manifest.json'),
     }),
 
-    //给每一个入口添加打包好的vender.dll.js
+    //给每一个入口添加打包好的vendor.dll.js
     new HtmlWebpackIncludeAssetsPlugin({
         assets: ['vendor.dll.js'],
         append: false,  //在body尾部的第一条引入

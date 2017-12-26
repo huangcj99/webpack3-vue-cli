@@ -150,7 +150,7 @@ module.exports = {
     new webpack.optimize.ModuleConcatenationPlugin(),
 
     //稳定moduleId
-    //避免引入了一个新模块后,导致模块ID变更使得vender和common的hash变化后缓存失效
+    //避免引入了一个新模块后,导致模块ID变更使得vendor和common的hash变化后缓存失效
     new webpack.HashedModuleIdsPlugin(),
 
     //稳定chunkId
@@ -175,7 +175,7 @@ module.exports = {
       name: 'vendor'
     }),
 
-    //将有webpack-runtime相关的代码抽离成manifest，持久化存储vender
+    //将有webpack-runtime相关的代码抽离成manifest，持久化存储vendor
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       chunks: ['vendor']

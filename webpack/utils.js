@@ -64,7 +64,7 @@ const getHtmlPlugins = (pages, entries) => {
       // 配置生成的html文件，定义路径等
       const conf = {
         filename: `${pathname}.html`,
-        favicon: 'src/assets/imgs/favicon.ico',
+        favicon: 'src/assets/imgs/favicon.ico', //favicon.ico路径
         template: pages[pathname], // 模板路径
         inlineSource:  'manifest',  //内联manifest，减少一个请求
         inject: true, // js插入位置

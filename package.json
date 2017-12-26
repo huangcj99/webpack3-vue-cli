@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dll": "webpack --config webpack/dll.config.js",
+    "predev": "sh bin/cp-script-components.sh",
     "dev": "cross-env NODE_ENV=dev webpack-dev-server --host 0.0.0.0 --watch-poll --config webpack/dev.config.js --progress --colors --inline",
     "start": "sh bin/dev.sh",
     "pretest": "sh bin/clean-build.sh && sh bin/cp-script-components.sh",
