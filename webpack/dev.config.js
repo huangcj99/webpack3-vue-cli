@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
+const vConsolePlugin = require('vconsole-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 
 //项目配置
@@ -95,16 +96,16 @@ module.exports = {
             options: { sourceMap: true }
           },
           {
-            loader: 'sass-loader',
-            options: { sourceMap: true }
-          },
-          {
             loader: 'postcss-loader',
             options: {
               ident: 'postcss',
               plugins: postConfig,
               sourceMap: true
             }
+          },
+          {
+            loader: 'sass-loader',
+            options: { sourceMap: true }
           }
         ]
       },
@@ -159,28 +160,28 @@ module.exports = {
       __MODE__: JSON.stringify(process.env.NODE_ENV)
     }),
 
-    // // 作用域提升，优化模块闭包的包裹数量，减少bundle的体积
-    // new webpack.optimize.ModuleConcatenationPlugin(),
-    //
-    // //稳定moduleId，避免引入了一个新模块后，导致模块ID变更使得vender和common的hash变化缓存失效
-    // new webpack.NamedModulesPlugin(),
-    //
-    // //稳定chunkId
-    // //避免异步加载chunk(或减少chunk)，导致的chunkId变化（做持久化缓存）
-    // new webpack.NamedChunksPlugin((chunk) => {
-    //   if (chunk.name) {
-    //     return chunk.name;
-    //   }
-    //
-    //   return chunk.mapModules(m => path.relative(m.context, m.request)).join("_");
-    // }),
-    //
-    // // 抽取通用代码
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: 'common',
-    //   chunks,
-    //   minChunks: 2
-    // }),
+    // 作用域提升，优化模块闭包的包裹数量，减少bundle的体积
+    new webpack.optimize.ModuleConcatenationPlugin(),
+
+    //稳定moduleId，避免引入了一个新模块后，导致模块ID变更使得vender和common的hash变化缓存失效
+    new webpack.NamedModulesPlugin(),
+
+    //稳定chunkId
+    //避免异步加载chunk(或减少chunk)，导致的chunkId变化（做持久化缓存）
+    new webpack.NamedChunksPlugin((chunk) => {
+      if (chunk.name) {
+        return chunk.name;
+      }
+
+      return chunk.mapModules(m => path.relative(m.context, m.request)).join("_");
+    }),
+
+    // 抽取通用代码
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'common',
+      chunks,
+      minChunks: 2
+    }),
 
     //指导webpack打包业务代码时，使用预先打包好的vender.dll.js
     new webpack.DllReferencePlugin({
@@ -197,6 +198,10 @@ module.exports = {
 
     // 允许错误不打断程序
     new webpack.NoEmitOnErrorsPlugin(),
+
+    new vConsolePlugin({
+        enable: true
+    }),
 
     //html-Templlate
     ...htmlPlugins

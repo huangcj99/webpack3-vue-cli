@@ -8,7 +8,7 @@ const UglifyJsParallelPlugin = require('webpack-uglify-parallel');
 
 const config = require('./config')[process.env.NODE_ENV];
 const utils = require('./utils');
-const vendors = require('./basic-vendor.config.js');
+const vendors = require('./vendor.config.js');
 const postConfig = require('./postcss.config');
 
 //html模板配置
@@ -50,7 +50,7 @@ module.exports = {
               fallback: 'vue-style-loader'
             }),
             scss: ExtractTextPlugin.extract({
-              use: [ 'css-loader?minimize', 'sass-loader' ],
+              use: [ 'css-loader?minimize', 'sass-loader?outputStyle=expanded' ],
               fallback: 'vue-style-loader'
             })
           },
@@ -91,14 +91,14 @@ module.exports = {
         loader: ExtractTextPlugin.extract({
           use: [
             'css-loader?minimize',
-            'sass-loader',
             {
               loader: 'postcss-loader',
               options: {
                 ident: 'postcss',
                 plugins: postConfig
               }
-            }
+            },
+            'sass-loader?outputStyle=expanded'
           ]
         })
       },

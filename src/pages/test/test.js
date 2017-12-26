@@ -1,8 +1,7 @@
 import 'assets/css/reset.css'
-import './test.css'
 import './test.scss'
 import Vue from 'vue'
-import App from './components/app.vue'
+import App from './app.vue'
 
 /* eslint no-new: "off" */
 new Vue({
@@ -27,13 +26,3 @@ async function test () {
 }
 
 test()
-
-class Test2 {
-  a () {
-    console.log('aaaaaaa')
-  }
-}
-
-const aaa = new Test2()
-
-aaa.a()

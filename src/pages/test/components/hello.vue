@@ -16,10 +16,11 @@
 <style lang="scss" scoped>
   .hello {
     .p1 {
-      font-size: 50px;
+      font-size: 20px;/*px*/
     }
 
     .p2 {
+      font-size: 30px;/*px*/
       color: red;
     }
   }

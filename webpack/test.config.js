@@ -5,10 +5,11 @@ const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const ManifestPlugin = require('webpack-manifest-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const vConsolePlugin = require('vconsole-webpack-plugin');
 
 const config = require('./config')[process.env.NODE_ENV];
 const utils = require('./utils');
-const vendors = require('./basic-vendor.config.js');
+const vendors = require('./vendor.config.js');
 const postConfig = require('./postcss.config');
 
 const entries = utils.getEntry('./src/pages/**/*.js');
@@ -49,7 +50,7 @@ module.exports = {
               fallback: 'vue-style-loader'
             }),
             scss: ExtractTextPlugin.extract({
-              use: [ 'css-loader?minimize', 'sass-loader' ],
+              use: [ 'css-loader', 'sass-loader?outputStyle=expanded' ],
               fallback: 'vue-style-loader'
             })
           },
@@ -90,14 +91,14 @@ module.exports = {
         loader: ExtractTextPlugin.extract({
           use: [
             'css-loader',
-            'sass-loader',
             {
               loader: 'postcss-loader',
               options: {
                 ident: 'postcss',
                 plugins: postConfig
               }
-            }
+            },
+            'sass-loader?outputStyle=expanded'
           ]
         })
       },
@@ -205,6 +206,10 @@ module.exports = {
 
     // 允许错误不打断程序
     new webpack.NoEmitOnErrorsPlugin(),
+
+    new vConsolePlugin({
+        enable: true
+    }),
 
     //html模板配置
     ...htmlPlugins,
