@@ -99,7 +99,6 @@ $ sh deploy.sh (./deploy.sh 需要修改该文件的权限为可执行)
 #### lib-flexible(rem适配)
 
 ```
-
 1. <head>中引入lib-flexible，参考test.html下的引入方式
 
 2. 使用postcss-px2rem自动转换（通过注释的方式标记）
@@ -128,7 +127,6 @@ $ sh deploy.sh (./deploy.sh 需要修改该文件的权限为可执行)
   [data-dpr="3"] .test {
     font-size: 30px;
   }
-
 ```
 
 ### eslint代码检测
