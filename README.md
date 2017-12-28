@@ -134,6 +134,40 @@ src/libs下放置团队根据业务编写的模块，src/components放置公共�
 
 注：需要打进vendor包的库，可在vendor.config.js文件中配置，此方案vendor打包的库版本最好在package.json设为指定版本（版本变更可能会导致vendor hash值变化）
 
+
+### script_components配置
+
+#### 详情查看html-webpack-plugin插件的自定义模板（webpack/utils.js下进行配置）
+
+webpack/script_components.config.js
+```
+const scriptComponents = {
+  flexible: '/script_components/lib-flexible/1.0.0/index.js',
+  wxjssdk: '/script_components/wx-jssdk/1.2.0/wx-jssdk.min.js'
+}
+```
+注：不需要压缩的模块文件名加上min
+
+src/pages/test/test.html
+```
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script src="<%= htmlWebpackPlugin.options.components.flexible %>"></script>
+  </head>
+  <body>
+    ...
+    <script src="<%= htmlWebpackPlugin.options.components.wxjssdk %>"></script>
+  </body>
+</html>
+
+```
+
+npm run start 脚本会自动将src/script_components复制到build中供开发时使用
+
+npm run prod  脚本会自动压缩模块并且将压缩后的模块输出到build中供生产环境使用
+
 ### window下（无bash命令行工具）
 
 #### 本地开发
