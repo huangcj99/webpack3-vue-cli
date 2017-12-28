@@ -2,13 +2,15 @@ const path = require('path');
 const glob = require('glob');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const scriptComponents = require('./script_components.config');
+
 /**
  * 读取 html 文件
  * @param    {[type]}                pages   [description]
  * @param    {[type]}                entries [description]
  * @return   {[type]}                [description]
  * @datetime 2017-11-21T16:58:57+080
- * @author smallcatcat<smallcatcat.joe@gmail.com>
+ * @author joe<smallcatcat.joe@gmail.com>
  */
 const getEntry = (globPath, exclude) => {
   const entries = {};
@@ -53,7 +55,7 @@ const getEntry = (globPath, exclude) => {
  * @param    {[type]}                entries [description]
  * @return   {[type]}                [description]
  * @datetime 2017-11-21T16:58:57+080
- * @author smallcatcat<smallcatcat.joe@gmail.com>
+ * @author joe<smallcatcat.joe@gmail.com>
  */
 const getHtmlPlugins = (pages, entries) => {
   const confs = [];
@@ -73,9 +75,7 @@ const getHtmlPlugins = (pages, entries) => {
         },
         chunks: ['manifest', 'vendor', 'common'],
         chunksSortMode: 'dependency',
-        components: {
-          flexible: '/script_components/lib-flexible/1.0.0/index.js'
-        }
+        components: scriptComponents //需要以script链接的方式引入的模块用自定义模板引入
       };
 
       if (pathname in entries) {

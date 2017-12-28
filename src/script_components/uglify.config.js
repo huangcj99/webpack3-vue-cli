@@ -19,6 +19,11 @@ const getScriptComponentEntry = () => {
       return
     }
 
+    // min文件不压缩，避免压缩出错
+    if (entry.indexOf('min') > -1) {
+      return
+    }
+
     // 拼装key为 script_components/lib-flexible/1.0.0/index
     tmp.pop();
     tmp.shift();
@@ -52,7 +57,6 @@ module.exports = {
         new UglifyJsParallelPlugin({
             workers: os.cpus().length,
             mangle: true,
-            exclude: /\.min\.js$/,
             output: { comments: false },
             compressor: {
                 warnings: false,
