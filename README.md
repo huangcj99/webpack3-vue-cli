@@ -185,3 +185,5 @@ $ npm run dev  (删除package.json中script中的predev, 因为包含bash脚本)
 $ npm run uglify (手动压缩并输出script_components到build中)
 $ npm run prod (删除package.json中script中的preprod, 因为包含bash脚本)
 ```
+
+推荐安装git bash或者是cmder命令行工具
