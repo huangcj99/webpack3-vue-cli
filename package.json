@@ -1,8 +1,8 @@
 {
-  "name": "webpack3-demo",
+  "name": "webpack3-vue-cli",
   "version": "1.0.0",
-  "author": "smallcatcat.joe@gmail.com",
-  "description": "webpack3",
+  "author": "joe<smallcatcat.joe@gmail.com>",
+  "description": "webpack3 vue",
   "main": "index.js",
   "scripts": {
     "dll": "webpack --config webpack/dll.config.js",
@@ -21,8 +21,8 @@
     "last 4 versions"
   ],
   "dependencies": {
-    "axios": "^0.17.1",
-    "vue": "^2.5.8"
+    "axios": "0.17.1",
+    "vue": "2.5.8"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.6",
