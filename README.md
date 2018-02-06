@@ -98,13 +98,13 @@ $ sh deploy.sh (./deploy.sh 需要修改该文件的权限为可执行)
 
 #### 使用vw单位做适配（微信端支持度不错）
 
+[大漠移动端适配](https://www.w3cplus.com/css/vw-for-layout.html)
+
 ```
 1、<head>标签中添加（参考test.html）
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
 
 2、使用postcss-px-to-viewport对px单位进行转换，1px默认不处理
-
-[大漠移动端适配](https://www.w3cplus.com/css/vw-for-layout.html)
 
 3、兼容mint-ui
 ```
