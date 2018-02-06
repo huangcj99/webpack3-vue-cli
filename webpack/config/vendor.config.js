@@ -1,8 +1,9 @@
 //项目基础包，入口基本都需要使用的建议放此
-//使用于需要持续迭代的项目
+//持久化缓存
 const vendorList = [
   'vue',
-  'axios'
+  'axios',
+  'fastclick'
 ]
 
 module.exports = vendorList;

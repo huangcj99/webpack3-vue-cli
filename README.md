@@ -1,13 +1,24 @@
 # webpack3搭建vue脚手架，移动端
 
-## 一、环境搭建
+## 一、技术栈
+
+- [x] [Webpack](https://webpack.github.io)
+- [x] [Vue](https://facebook.github.io/react/)
+- [x] [ES6](http://es6.ruanyifeng.com/)
+- [x] [Babel](https://babeljs.io/)
+- [x] [PostCSS](https://github.com/postcss/postcss)
+- [x] [Autoprefixer](https://github.com/postcss/autoprefixer)
+- [x] [Sass](https://github.com/sass/node-sass)
+- [x] [Eslint](https://github.com/eslint/eslint)
+
+## 二、环境搭建
 ### [Node](https://nodejs.org/) 安装
 
 > 项目基于 Node LTS V6.9.1 版本
 
 推荐使用 [nvm](https://github.com/creationix/nvm) 管理 Node 版本
 
-## 二、快速开始
+## 三、快速开始
 
 ### 本地开发/测试环境打包/线上环境打包
 
@@ -43,14 +54,18 @@ $ git clone git@github.com:smallcatcat-joe/webpack3-vue-cli.git
 |               ├── app.vue # vue组件入口
 |
 ├── webpack
-|   ├── config # api 目录 （接口转发配置）
+|   ├── config
+|   |      ├── config.js # 开发/线上配置，以及开发代理接口配置
+|   |      ├── postcss.config.js # postcss插件配置
+|   |      ├── resolve.config.js # webpack resolve配置
+|   |      ├── script_components.config.js # 配置外链js的src路径
+|   |      ├── utils.js # 多入口html模板装配
+|   |      ├── vendor.config.js # 线上打包的vendor列表
+|   |
 |   ├── dll.config.js #  用于打包开发vendor.dll.js的配置文件(本地开发时，避免重复编译vendor，节省时间)
-|   ├── vendor.config.js # 线上打包的vendor列表
 |   ├── dev.config.js # 本地开发配置
 |   ├── test.config.js # 测试配置
 |   ├── prod.config.js # 线上配置
-|   ├── utils.js # 多入口html模板装配
-|   ├── postcss.config.js # postcss插件配置
 |
 ```
 
@@ -81,37 +96,23 @@ $ sh deploy.sh (./deploy.sh 需要修改该文件的权限为可执行)
 
 ### 移动端适配方案
 
-#### lib-flexible(rem适配)
+#### 使用vw单位做适配（微信端支持度不错）
 
 ```
-1. <head>中引入lib-flexible，参考test.html下的引入方式
+1、<head>标签中添加（参考test.html）
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
 
-2. 使用postcss-px2rem自动转换（通过注释的方式标记）
-  .test {
-    width: 100px;
-    height: 100px;
-    font-size: 20px;/*px*/
-    border: 1px solid black;/*no*/
-    color: red;
-  }
+2、使用postcss-px-to-viewport对px单位进行转换，1px默认不处理
 
-  =========>
+[大漠移动端适配](https://www.w3cplus.com/css/vw-for-layout.html)
 
-  .test {
-    width: 1.33rem;
-    height: 1.33rem;
-    border: 1px solid black;
-    color: red;
-  }
-  [data-dpr="1"] .test {
-    font-size: 10px;
-  }
-  [data-dpr="2"] .test {
-    font-size: 20px;
-  }
-  [data-dpr="3"] .test {
-    font-size: 30px;
-  }
+3、兼容mint-ui
+```
+
+### 引入mint-ui库(按需引入)
+
+```
+import { MessageBox } from 'mint-ui';
 ```
 
 ### eslint代码检测
@@ -126,13 +127,42 @@ $ npm run lint
 
 #### 将node_modules下的库分成两类
 ```
-1.vendor（如：vue，axios等，在增量开发时，此类模块打包成vendor做持久化存储）
+1.基础模块（如：vue，axios，fastclick等，在增量开发时，此类模块打包成vendor做持久化存储）
 
-2.common 在迭代的时候引入的模块(不常用，但是需要打包的，统一打包到common中，与src/libs自己写的模块做统一打包配置)
+2.在迭代的时候引入的模块(不常用，但是需要打包的，统一打包到common中)
+
+注：需要打进vender包的库，可在vender.config.js文件中配置，此方案vendor打包的库版本最好在package.json设为指定版本（版本变更可能会导致vendor hash值变化）
 ```
-src/libs下放置团队根据业务编写的模块，src/components放置公共组件，统一打包到common中
 
-注：需要打进vendor包的库，可在vendor.config.js文件中配置，此方案vendor打包的库版本最好在package.json设为指定版本（版本变更可能会导致vendor hash值变化）
+### script_components配置
+
+#### 详情查看html-webpack-plugin插件的自定义模板（webpack/utils.js下进行配置）
+
+webpack/script_components.config.js
+```
+const scriptComponents = {
+  wxjssdk: '/script_components/wx-jssdk/1.2.0/wx-jssdk.min.js'
+}
+```
+注：不需要压缩的模块文件名加上min，如index.min.js
+
+src/pages/test/test.html
+```
+<html>
+  <head>
+    ...
+  </head>
+  <body>
+    ...
+    <script src="<%= htmlWebpackPlugin.options.components.wxjssdk %>"></script>
+  </body>
+</html>
+
+```
+
+npm run start 脚本会自动将src/script_components复制到build中供开发时使用
+
+npm run prod  脚本会自动压缩模块并且将压缩后的模块输出到build中供生产环境使用
 
 
 ### script_components配置

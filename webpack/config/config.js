@@ -4,23 +4,23 @@ const path = require('path');
 const config = {
   dev: {
     port: 9000,
-    outputDir: path.join(__dirname, '../build'),
+    outputDir: path.join(__dirname, '../../build'),
     publicPath: '/',
     proxy: {
       '/api/**': {
-        target: "http://dev.api.cer.dingdingyisheng.mobi",
+        target: '',
         changeOrigin: true
       }
     }
   },
 
   test: {
-    outputDir: path.join(__dirname, '../build'),
+    outputDir: path.join(__dirname, '../../build'),
     publicPath: '/'
   },
 
   production: {
-    outputDir: path.join(__dirname, '../build'),
+    outputDir: path.join(__dirname, '../../build'),
     publicPath: '/'
   }
 };

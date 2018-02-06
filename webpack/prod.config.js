@@ -6,10 +6,12 @@ const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const UglifyJsParallelPlugin = require('webpack-uglify-parallel');
 
-const config = require('./config')[process.env.NODE_ENV];
-const utils = require('./utils');
-const vendors = require('./vendor.config.js');
-const postConfig = require('./postcss.config');
+// 项目配置
+const config = require('./config/config')[process.env.NODE_ENV];
+const utils = require('./config/utils');
+const vendors = require('./config/vendor.config.js');
+const postConfig = require('./config/postcss.config');
+const resolveConfig = require('./config/resolve.config.js')
 
 //html模板配置
 const entries = utils.getEntry('./src/pages/**/*.js');
@@ -50,7 +52,17 @@ module.exports = {
               fallback: 'vue-style-loader'
             }),
             scss: ExtractTextPlugin.extract({
-              use: [ 'css-loader?minimize', 'sass-loader?outputStyle=expanded' ],
+              use: [
+                'css-loader?minimize',
+                'sass-loader?outputStyle=expanded',
+                {
+                  // 在vue文件中不需要引入全局的scss就可使用mixin.scss中的全局变量与mixin
+                  loader: 'sass-resources-loader',
+                  options: {
+                    resources: path.resolve(__dirname, '../src/assets/sass/mixin.scss')
+                  }
+                }
+              ],
               fallback: 'vue-style-loader'
             })
           },
@@ -121,19 +133,7 @@ module.exports = {
     ]
   },
 
-  resolve: {
-    extensions: [ '.js', '.vue' ],
-    //优先搜索src下的libs目录
-    modules: [
-      path.resolve(__dirname, "../src/libs"),
-      "node_modules"
-    ],
-    alias: {
-      'assets': path.resolve(__dirname, '../src/assets'),
-      'libs': path.resolve(__dirname, '../src/libs'),
-      'components': path.resolve(__dirname,'../src/components')
-    }
-  },
+  resolve: resolveConfig,
 
   plugins: [
     //定义环境变量
@@ -150,7 +150,7 @@ module.exports = {
     new webpack.optimize.ModuleConcatenationPlugin(),
 
     //稳定moduleId
-    //避免引入了一个新模块后,导致模块ID变更使得vendor和common的hash变化后缓存失效
+    //避免引入了一个新模块后,导致模块ID变更使得vender和common的hash变化后缓存失效
     new webpack.HashedModuleIdsPlugin(),
 
     //稳定chunkId
@@ -175,7 +175,7 @@ module.exports = {
       name: 'vendor'
     }),
 
-    //将有webpack-runtime相关的代码抽离成manifest，持久化存储vendor
+    //将有webpack-runtime相关的代码抽离成manifest，持久化存储vender
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       chunks: ['vendor']

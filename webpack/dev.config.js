@@ -5,9 +5,10 @@ const vConsolePlugin = require('vconsole-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 
 //项目配置
-const config = require('./config')[process.env.NODE_ENV];
-const utils = require('./utils');
-const postConfig = require('./postcss.config');
+const config = require('./config/config')[process.env.NODE_ENV];
+const utils = require('./config/utils');
+const postConfig = require('./config/postcss.config');
+const resolveConfig = require('./config/resolve.config.js')
 
 const entries = utils.getEntry('./src/pages/**/*.js');
 const pages = utils.getEntry('./src/pages/**/*.html');
@@ -40,7 +41,18 @@ module.exports = {
         options: {
           loaders: {
             css: 'vue-style-loader?sourceMap!css-loader?sourceMap',
-            scss: 'vue-style-loader?sourceMap!css-loader?sourceMap!sass-loader?sourceMap'
+            scss: [
+              'vue-style-loader?sourceMap',
+              'css-loader?sourceMap',
+              'sass-loader?sourceMap',
+              {
+                // 在vue文件中不需要引入全局的scss就可使用mixin.scss中的全局变量与mixin
+                loader: 'sass-resources-loader',
+                options: {
+                  resources: path.resolve(__dirname, '../src/assets/sass/mixin.scss')
+                }
+              }
+            ]
           },
           postcss: postConfig
         }
@@ -137,19 +149,7 @@ module.exports = {
     proxy: config.proxy
   },
 
-  resolve: {
-    extensions: [ '.js', '.vue' ],
-    //优先搜索src下的libs目录
-    modules: [
-      path.resolve(__dirname, "../src/libs"),
-      "node_modules"
-    ],
-    alias: {
-      'assets': path.resolve(__dirname, '../src/assets'),
-      'libs': path.resolve(__dirname, '../src/libs'),
-      'components': path.resolve(__dirname,'../src/components')
-    }
-  },
+  resolve: resolveConfig,
 
   plugins: [
     // 将文件同步输出到build
@@ -160,21 +160,21 @@ module.exports = {
       __MODE__: JSON.stringify(process.env.NODE_ENV)
     }),
 
-    // 作用域提升，优化模块闭包的包裹数量，减少bundle的体积
-    new webpack.optimize.ModuleConcatenationPlugin(),
-
-    //稳定moduleId，避免引入了一个新模块后，导致模块ID变更使得vendor和common的hash变化缓存失效
-    new webpack.NamedModulesPlugin(),
-
-    //稳定chunkId
-    //避免异步加载chunk(或减少chunk)，导致的chunkId变化（做持久化缓存）
-    new webpack.NamedChunksPlugin((chunk) => {
-      if (chunk.name) {
-        return chunk.name;
-      }
-
-      return chunk.mapModules(m => path.relative(m.context, m.request)).join("_");
-    }),
+    // // 作用域提升，优化模块闭包的包裹数量，减少bundle的体积
+    // new webpack.optimize.ModuleConcatenationPlugin(),
+    //
+    // //稳定moduleId，避免引入了一个新模块后，导致模块ID变更使得vender和common的hash变化缓存失效
+    // new webpack.NamedModulesPlugin(),
+    //
+    // //稳定chunkId
+    // //避免异步加载chunk(或减少chunk)，导致的chunkId变化（做持久化缓存）
+    // new webpack.NamedChunksPlugin((chunk) => {
+    //   if (chunk.name) {
+    //     return chunk.name;
+    //   }
+    //
+    //   return chunk.mapModules(m => path.relative(m.context, m.request)).join("_");
+    // }),
 
     // 抽取通用代码
     new webpack.optimize.CommonsChunkPlugin({
@@ -183,13 +183,13 @@ module.exports = {
       minChunks: 2
     }),
 
-    //指导webpack打包业务代码时，使用预先打包好的vendor.dll.js
+    //指导webpack打包业务代码时，使用预先打包好的vender.dll.js
     new webpack.DllReferencePlugin({
         context: __dirname,
         manifest: require('../build/vendor-manifest.json'),
     }),
 
-    //给每一个入口添加打包好的vendor.dll.js
+    //给每一个入口添加打包好的vender.dll.js
     new HtmlWebpackIncludeAssetsPlugin({
         assets: ['vendor.dll.js'],
         append: false,  //在body尾部的第一条引入

@@ -1,0 +1,62 @@
+/* 用于修改input placeholder颜色、字体大小与偏移 */
+@mixin setPlaceholderParams($color: black, $size: 16px, $left: 0) {
+  &::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: $color;
+    font-size: $size;
+    position: relative;
+    left: $left;
+  }
+
+  &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: $color;
+    font-size: $size;
+    position: relative;
+    left: $left;
+  }
+
+  &::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: $color;
+    font-size: $size;
+    position: relative;
+    left: $left;
+  }
+
+  &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: $color;
+    font-size: $size;
+    position: relative;
+    left: $left;
+  }
+}
+
+/* Android 7.0+ 可修复安卓上下不居中的问题 html标签中需要加上lang="zh-cmn-Hans" */
+@mixin fixedAndroidCenter() {
+  font-family: sans-serif;
+}
+
+/* 设置背景图片 */
+@mixin setBackground($width, $height, $url, $size: contain) {
+  display: inline-block;
+  width: $width;
+  height: $height;
+  background: url($url) no-repeat;
+  background-size: $size;
+}
+
+/* 增加05px的底部细线 */
+@mixin setOneHalfOfOnePixelBorderBottom($color: #eee, $position: relative) {
+  position: $position;
+
+  &:after {
+    display: block;
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 200%;
+    height: 0px;
+    border-bottom: 1px solid $color;
+    transform-origin: 0 0;
+    transform: scale(0.5, 0.5);
+  }
+}

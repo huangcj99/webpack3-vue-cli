@@ -4,14 +4,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const scriptComponents = require('./script_components.config');
 
-/**
- * 读取 html 文件
- * @param    {[type]}                pages   [description]
- * @param    {[type]}                entries [description]
- * @return   {[type]}                [description]
- * @datetime 2017-11-21T16:58:57+080
- * @author joe<smallcatcat.joe@gmail.com>
- */
 const getEntry = (globPath, exclude) => {
   const entries = {};
   let excludePaths = [];
@@ -49,14 +41,6 @@ const getEntry = (globPath, exclude) => {
   return entries;
 };
 
-/**
- * 读取 html 文件
- * @param    {[type]}                pages   [description]
- * @param    {[type]}                entries [description]
- * @return   {[type]}                [description]
- * @datetime 2017-11-21T16:58:57+080
- * @author joe<smallcatcat.joe@gmail.com>
- */
 const getHtmlPlugins = (pages, entries) => {
   const confs = [];
 
@@ -66,7 +50,7 @@ const getHtmlPlugins = (pages, entries) => {
       // 配置生成的html文件，定义路径等
       const conf = {
         filename: `${pathname}.html`,
-        favicon: 'src/assets/imgs/favicon.ico', //favicon.ico路径
+        favicon: 'src/assets/imgs/favicon.ico',
         template: pages[pathname], // 模板路径
         inlineSource:  'manifest',  //内联manifest，减少一个请求
         inject: true, // js插入位置

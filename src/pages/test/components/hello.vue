@@ -1,7 +1,7 @@
 <template id="">
   <div class="hello">
-    <p class="p1">hello</p>
-    <p class="p2">world</p>
+    <span>hello</span>
+    <span>world</span>
   </div>
 </template>
 
@@ -34,13 +34,14 @@
 
 <style lang="scss" scoped>
   .hello {
-    .p1 {
-      font-size: 20px;/*px*/
-    }
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
 
-    .p2 {
-      font-size: 30px;/*px*/
-      color: red;
+    span:first-child {
+      margin-right: 5px;
     }
   }
 </style>
