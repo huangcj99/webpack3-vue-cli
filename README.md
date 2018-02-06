@@ -172,7 +172,6 @@ npm run prod  脚本会自动压缩模块并且将压缩后的模块输出到bui
 webpack/script_components.config.js
 ```
 const scriptComponents = {
-  flexible: '/script_components/lib-flexible/1.0.0/index.js',
   wxjssdk: '/script_components/wx-jssdk/1.2.0/wx-jssdk.min.js'
 }
 ```
