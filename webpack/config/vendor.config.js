@@ -2,10 +2,7 @@
 //持久化缓存
 const vendorList = [
   'vue',
-  'axios',
-  'fastclick',
-  'vue-rx',
-  'rxjs'
+  'axios'
 ]
 
 module.exports = vendorList;
