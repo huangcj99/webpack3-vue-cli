@@ -22,7 +22,6 @@
   ],
   "dependencies": {
     "axios": "0.17.1",
-    "fastclick": "1.0.6",
     "mint-ui": "^2.2.13",
     "vue": "2.5.8"
   },

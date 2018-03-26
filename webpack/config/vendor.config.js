@@ -3,7 +3,9 @@
 const vendorList = [
   'vue',
   'axios',
-  'fastclick'
+  'fastclick',
+  'vue-rx',
+  'rxjs'
 ]
 
 module.exports = vendorList;

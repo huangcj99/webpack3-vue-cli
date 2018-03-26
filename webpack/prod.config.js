@@ -56,7 +56,7 @@ module.exports = {
                 'css-loader?minimize',
                 'sass-loader?outputStyle=expanded',
                 {
-                  // 在vue文件中不需要引入全局的scss就可使用mixin.scss中的全局变量与mixin
+                  // 在vue文件中不需要@import来引入scss文件就可使用mixin.scss中的全局变量与mixin
                   loader: 'sass-resources-loader',
                   options: {
                     resources: path.resolve(__dirname, '../src/assets/sass/mixin.scss')

@@ -127,7 +127,7 @@ $ npm run lint
 
 #### 将node_modules下的库分成两类
 ```
-1.基础模块（如：vue，axios，fastclick等，在增量开发时，此类模块打包成vendor做持久化存储）
+1.基础模块（如：vue，axios等，在增量开发时，此类模块打包成vendor做持久化存储）
 
 2.在迭代的时候引入的模块(不常用，但是需要打包的，统一打包到common中)
 
@@ -175,7 +175,7 @@ const scriptComponents = {
   wxjssdk: '/script_components/wx-jssdk/1.2.0/wx-jssdk.min.js'
 }
 ```
-注：不需要压缩的模块文件名加上min
+注：不需要压缩的模块文件名加上min，如index.min.js，若文件下全是带min的js文件，则不需要执行压缩，将sh bin/uglify-script-components.sh命令删掉即可
 
 src/pages/test/test.html
 ```

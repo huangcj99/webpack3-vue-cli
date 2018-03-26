@@ -1,6 +1,7 @@
 const path = require('path');
 const glob = require('glob');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const includeEntries = require('./include-entries.config')
 
 const scriptComponents = require('./script_components.config');
 
@@ -73,7 +74,28 @@ const getHtmlPlugins = (pages, entries) => {
   return confs;
 };
 
+const filterEntries = (entries) => {
+  if (includeEntries[0] === 'all') {
+    return entries
+  }
+
+  let filterEntries = {}
+
+  for (let key in entries) {
+    for (let i = 0; i < includeEntries.length; i++) {
+      let hasInclude = key.indexOf(includeEntries[i])
+
+      if (hasInclude !== -1) {
+        filterEntries[key] = entries[key]
+      }
+    }
+  }
+
+  return filterEntries
+}
+
 module.exports = {
   getEntry,
-  getHtmlPlugins
+  getHtmlPlugins,
+  filterEntries
 };
