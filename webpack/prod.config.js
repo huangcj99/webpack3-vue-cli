@@ -35,8 +35,7 @@ module.exports = {
   },
 
   module: {
-    rules: [
-      {
+    rules: [{
         enforce: 'pre',
         test: /\.(vue|js)$/,
         loader: 'eslint-loader',
@@ -48,7 +47,7 @@ module.exports = {
         options: {
           loaders: {
             css: ExtractTextPlugin.extract({
-              use: [ 'css-loader?minimize' ],
+              use: ['css-loader?minimize'],
               fallback: 'vue-style-loader'
             }),
             scss: ExtractTextPlugin.extract({
@@ -116,15 +115,13 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?\S*)?$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 10000,
-              name: 'img/[name].[hash:7].[ext]'
-            }
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+            name: 'img/[name].[hash:7].[ext]'
           }
-        ]
+        }]
       },
       {
         test: /\.ico$/,
@@ -139,6 +136,11 @@ module.exports = {
     //定义环境变量
     new webpack.DefinePlugin({
       __MODE__: JSON.stringify(process.env.NODE_ENV)
+    }),
+
+    new webpack.ProvidePlugin({
+      Vue: ['vue', 'default'],
+      Component: ['vue-class-component', 'default']
     }),
 
     //抽离CSS
@@ -166,7 +168,7 @@ module.exports = {
     //引用数超过2次的模块将抽取到common中
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common',
-      chunks,
+      chunks, 
       minChunks: 2
     }),
 
@@ -189,14 +191,14 @@ module.exports = {
       mangle: true,
       exclude: /\.min\.js$/,
       output: {
-        beautify: false,  //最紧凑的输出
-        comments: false  //删除注释
+        beautify: false, //最紧凑的输出
+        comments: false //删除注释
       },
       compress: {
-        warnings: false,  //删除没有用到的代码时不输出警告
-        drop_console: true,  //删除打印
-        collapse_vars: true,   //内嵌定义了但是只用到一次的变量
-        reduce_vars: true,  //提取出出现多次但是没有定义成变量去引用的静态值
+        warnings: false, //删除没有用到的代码时不输出警告
+        drop_console: true, //删除打印
+        collapse_vars: true, //内嵌定义了但是只用到一次的变量
+        reduce_vars: true, //提取出出现多次但是没有定义成变量去引用的静态值
       }
     }),
 

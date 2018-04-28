@@ -13,6 +13,9 @@ module.exports = {
     // 公共资源
     'assets': path.resolve(__dirname, '../../src/assets'),
     'libs': path.resolve(__dirname, '../../src/libs'),
-    'components': path.resolve(__dirname,'../../src/components')
+    'components': path.resolve(__dirname,'../../src/components'),
+    'plugin': path.resolve(__dirname, '../../src/plugin'),
+    // 常用库
+    'rx': path.resolve(__dirname, '../../node_modules/rxjs/Rx.js')
   }
 }

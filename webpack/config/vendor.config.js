@@ -2,7 +2,10 @@
 //持久化缓存
 const vendorList = [
   'vue',
-  'axios'
+  'axios',
+  'vue-rx',
+  'rx',
+  'vue-class-component'
 ]
 
 module.exports = vendorList;

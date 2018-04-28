@@ -18,15 +18,13 @@ module.exports = {
         "vendor": vendors,
     },
     module: {
-      rules: [
-        {
-          test: /\.css$/,
-          include: /node_modules/,
-          use: [
-            'style-loader', 'css-loader'
-          ]
-        }
-      ]
+        rules: [{
+            test: /\.css$/,
+            include: /node_modules/,
+            use: [
+                'style-loader', 'css-loader'
+            ]
+        }]
     },
     plugins: [
         //多线程压缩
@@ -34,7 +32,9 @@ module.exports = {
             workers: os.cpus().length,
             mangle: true,
             exclude: /\.min\.js$/,
-            output: { comments: false },
+            output: {
+                comments: false
+            },
             compressor: {
                 warnings: false,
                 drop_console: true,
@@ -44,7 +44,7 @@ module.exports = {
 
         //输出manifest
         new webpack.DllPlugin({
-            path:  path.join(__dirname, '../build', '[name]-manifest.json'),
+            path: path.join(__dirname, '../build', '[name]-manifest.json'),
             name: '[name]_[hash]',
         })
     ]

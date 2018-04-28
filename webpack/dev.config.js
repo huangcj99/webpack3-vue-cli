@@ -34,8 +34,7 @@ module.exports = {
   },
 
   module: {
-    rules: [
-      {
+    rules: [{
         enforce: 'pre',
         test: /\.(vue|js)$/,
         loader: 'eslint-loader',
@@ -75,14 +74,17 @@ module.exports = {
       {
         test: /\.css$/,
         exclude: /node_modules/,
-        use: [
-          {
+        use: [{
             loader: 'style-loader',
-            options: { sourceMap: true }
+            options: {
+              sourceMap: true
+            }
           },
           {
             loader: 'css-loader',
-            options: { sourceMap: true }
+            options: {
+              sourceMap: true
+            }
           },
           {
             loader: 'postcss-loader',
@@ -104,14 +106,17 @@ module.exports = {
       {
         test: /\.scss/,
         exclude: /node_modules/,
-        use: [
-          {
+        use: [{
             loader: 'style-loader',
-            options: { sourceMap: true }
+            options: {
+              sourceMap: true
+            }
           },
           {
             loader: 'css-loader',
-            options: { sourceMap: true }
+            options: {
+              sourceMap: true
+            }
           },
           {
             loader: 'postcss-loader',
@@ -123,21 +128,21 @@ module.exports = {
           },
           {
             loader: 'sass-loader',
-            options: { sourceMap: true }
+            options: {
+              sourceMap: true
+            }
           }
         ]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?\S*)?$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 10000,
-              name: 'img/[name].[hash:7].[ext]'
-            }
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+            name: 'img/[name].[hash:7].[ext]'
           }
-        ]
+        }]
       },
       {
         test: /\.ico$/,
@@ -151,7 +156,7 @@ module.exports = {
   devServer: {
     port: config.port,
     contentBase: config.outputDir,
-    watchContentBase: true,  //文件改动将触发整个页面重新加载
+    watchContentBase: true, //文件改动将触发整个页面重新加载
     proxy: config.proxy
   },
 
@@ -160,6 +165,11 @@ module.exports = {
   plugins: [
     // 将文件同步输出到build
     new WriteFilePlugin(),
+
+    new webpack.ProvidePlugin({
+      Vue: ['vue', 'default'],
+      Component: ['vue-class-component', 'default']
+    }),
 
     //定义环境变量
     new webpack.DefinePlugin({
@@ -191,22 +201,22 @@ module.exports = {
 
     //指导webpack打包业务代码时，使用预先打包好的vender.dll.js
     new webpack.DllReferencePlugin({
-        context: __dirname,
-        manifest: require('../build/vendor-manifest.json'),
+      context: __dirname,
+      manifest: require('../build/vendor-manifest.json'),
     }),
 
     //给每一个入口添加打包好的vender.dll.js
     new HtmlWebpackIncludeAssetsPlugin({
-        assets: ['vendor.dll.js'],
-        append: false,  //在body尾部的第一条引入
-        hash: true
+      assets: ['vendor.dll.js'],
+      append: false, //在body尾部的第一条引入
+      hash: true
     }),
 
     // 允许错误不打断程序
     new webpack.NoEmitOnErrorsPlugin(),
 
     new vConsolePlugin({
-        enable: true
+      enable: true
     }),
 
     //html-Templlate

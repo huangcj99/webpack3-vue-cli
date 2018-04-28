@@ -35,8 +35,7 @@ module.exports = {
   },
 
   module: {
-    rules: [
-      {
+    rules: [{
         enforce: 'pre',
         test: /\.(vue|js)$/,
         loader: 'eslint-loader',
@@ -48,7 +47,7 @@ module.exports = {
         options: {
           loaders: {
             css: ExtractTextPlugin.extract({
-              use: [ 'css-loader' ],
+              use: ['css-loader'],
               fallback: 'vue-style-loader'
             }),
             scss: ExtractTextPlugin.extract({
@@ -116,15 +115,13 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?\S*)?$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 10000,
-              name: 'img/[name].[hash:7].[ext]'
-            }
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+            name: 'img/[name].[hash:7].[ext]'
           }
-        ]
+        }]
       },
       {
         test: /\.ico$/,
@@ -139,6 +136,12 @@ module.exports = {
     //定义环境变量
     new webpack.DefinePlugin({
       __MODE__: JSON.stringify(process.env.NODE_ENV)
+    }),
+    
+    // 将频繁引入的模块定义为全局变量
+    new webpack.ProvidePlugin({
+      Vue: ['vue', 'default'],
+      Component: ['vue-class-component', 'default']
     }),
 
     //抽离CSS
@@ -208,7 +211,7 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin(),
 
     new vConsolePlugin({
-        enable: true
+      enable: true
     }),
 
     //html模板配置

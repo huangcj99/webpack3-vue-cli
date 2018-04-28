@@ -8,8 +8,7 @@ const config = {
     publicPath: '/',
     proxy: {
       '/api/**': {
-        // target: 'http://192.168.1.3:21033',
-        target: 'http://test.weixin.api.renbo.dingdingyisheng.mobi',
+        target: 'http://dev.api.cer.dingdingyisheng.mobi',
         changeOrigin: true
       }
     }
