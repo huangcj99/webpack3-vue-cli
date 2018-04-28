@@ -25,10 +25,10 @@ import TestComponent from './components/test.vue'
 })
 export default class MyApp extends Vue {
   created () {
-    this.$axios.get('/api/base/clinical-project')
-      .then((res) => {
-        console.log(res);
-      })
+    // this.$axios.get('/api/base/clinical-project')
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
   }
 
   get add () {

@@ -3,7 +3,7 @@
 ## 一、技术栈
 
 - [x] [Webpack](https://webpack.github.io)
-- [x] [Vue](https://facebook.github.io/react/)
+- [x] [Vue（class style）](https://facebook.github.io/react/)
 - [x] [ES6](http://es6.ruanyifeng.com/)
 - [x] [Babel](https://babeljs.io/)
 - [x] [PostCSS](https://github.com/postcss/postcss)
@@ -40,6 +40,8 @@ $ git clone git@github.com:smallcatcat-joe/webpack3-vue-cli.git
 |   ├── components # 公共组件
 |   |
 |   ├── libs # 库
+|   |
+|   ├── plugin # vue插件(包括axios，rxjs)
 |   |
 |   ├── script_components # 需要以script方式引入到html的模块
 |   |          ├── ... # 相关模块
