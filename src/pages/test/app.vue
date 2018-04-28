@@ -38,7 +38,7 @@ export default class MyApp extends Vue {
     return this.num$ ? this.num$ + 1 : 0
   }
 
-  // rxjs
+  // obs stream
   subscriptions () {
     // 换用class方式后缺失domStreamEvent的绑定，这里重新编写插件进行绑定
     this.$bindDomStreamEventToThis([

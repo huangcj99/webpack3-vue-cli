@@ -12,7 +12,7 @@
     "pretest": "sh bin/clean-build.sh && sh bin/cp-script-components.sh",
     "test": "cross-env NODE_ENV=test webpack --config webpack/test.config.js --progress --colors --hide-modules --display-error-details",
     "uglify": "webpack --config ./src/script_components/uglify.config.js",
-    "preprod": "sh bin/clean-build.sh && sh bin/cp-script-components.sh",
+    "preprod": "sh bin/clean-build.sh && sh bin/uglify-script-components.sh",
     "prod": "cross-env NODE_ENV=production webpack --optimize-minimize --config webpack/prod.config.js --progress --colors --hide-modules --display-error-details",
     "lint": "eslint --ext .js,.vue src"
   },
