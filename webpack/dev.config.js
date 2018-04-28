@@ -154,15 +154,18 @@ module.exports = {
 
   //webpack-dev-server开启
   devServer: {
+    hot: true,
     port: config.port,
     contentBase: config.outputDir,
-    watchContentBase: true, //文件改动将触发整个页面重新加载
+    // watchContentBase: true, //文件改动将触发整个页面重新加载
     proxy: config.proxy
   },
 
   resolve: resolveConfig,
 
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+
     // 将文件同步输出到build
     new WriteFilePlugin(),
 

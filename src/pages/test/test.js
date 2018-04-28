@@ -6,7 +6,7 @@ import 'plugin/register-hooks'
 import 'plugin/rxjs'
 import 'plugin/axios'
 // components import
-import App from './app.vue'
+import App from './test.vue'
 
 /* eslint no-new: "off" */
 new Vue({

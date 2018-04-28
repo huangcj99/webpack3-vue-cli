@@ -5,9 +5,7 @@
 <script>
 @Component
 export default class TestComponent extends Vue {
-    created () {
-        console.log('test-component')
-    }
+	
 }
 </script>
 

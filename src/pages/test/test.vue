@@ -29,7 +29,7 @@ export default class MyApp extends Vue {
   created () {
     this.$axios.get('/api/base/clinical-project')
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
       })
   }
 
@@ -75,5 +75,6 @@ export default class MyApp extends Vue {
 .content {
   width: 100vw;
   height: 100vh;
+  font-size: 30px;
 }
 </style>
