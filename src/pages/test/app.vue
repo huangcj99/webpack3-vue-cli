@@ -19,22 +19,26 @@
 import TestComponent from './components/test.vue'
 
 @Component({
+  // components
   components: {
     TestComponent
   }
 })
 export default class MyApp extends Vue {
+  // lift hooks
   created () {
-    // this.$axios.get('/api/base/clinical-project')
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
+    this.$axios.get('/api/base/clinical-project')
+      .then((res) => {
+        console.log(res);
+      })
   }
 
+  // computed
   get add () {
     return this.num$ ? this.num$ + 1 : 0
   }
 
+  // rxjs
   subscriptions () {
     // 换用class方式后缺失domStreamEvent的绑定，这里重新编写插件进行绑定
     this.$bindDomStreamEventToThis([
@@ -60,6 +64,7 @@ export default class MyApp extends Vue {
     }
   }
 
+  // methods
   testPromise () {
     return Promise.resolve('999')
   }
