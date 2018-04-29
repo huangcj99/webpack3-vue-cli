@@ -3,7 +3,9 @@
 ## 一、技术栈
 
 - [x] [Webpack](https://webpack.github.io)
-- [x] [Vue（class style）](https://facebook.github.io/react/)
+- [x] [Vue（class style）]
+(https://facebook.github.io/react/)
+- [x] [RxJS](http://cn.rx.js.org/)
 - [x] [ES6](http://es6.ruanyifeng.com/)
 - [x] [Babel](https://babeljs.io/)
 - [x] [PostCSS](https://github.com/postcss/postcss)
@@ -80,7 +82,7 @@ $ npm install #安装依赖
 $ npm run start # 会根据依赖的增减判断是否需要重新创建dll文件
 ```
 
-注：bin/dev.sh的脚本是根据依赖的增减来判断是否需要重复构建dll文件，如果增加了一个新的依赖，又删除了一个旧的，因为总的依赖数量不变，所以执行npm start后dll不会重新构建，此时可以删除build文件夹，再重新执行npm start
+注：bin/dev.sh的脚本是根据依赖的增减来判断是否需要重复构建dll文件，如果增加了一个新的依赖，又删除了一个旧的，因为总的依赖数量不变，所以执行npm start后dll不会重新构建，此时可以删除build文件夹，再重新执行npm start(dll文件不要压缩，会导致框架错误提示丢失)
 
 
 #### 2. 线上打包（与测试打包相同，测试包，不涉及压缩，用于测试环境下调试）
