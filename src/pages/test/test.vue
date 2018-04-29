@@ -16,7 +16,9 @@
 </template>
 
 <script>
+/* global Vue Component */
 import TestComponent from './components/test.vue'
+import urlutils from 'libs/urlutils'
 
 @Component({
   // components
@@ -29,8 +31,11 @@ export default class MyApp extends Vue {
   created () {
     this.$axios.get('/api/base/clinical-project')
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data)
       })
+
+    let code = urlutils.getUrlParams('code')
+    console.log(code)
   }
 
   // computed

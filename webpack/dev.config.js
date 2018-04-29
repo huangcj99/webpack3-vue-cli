@@ -3,6 +3,8 @@ const webpack = require('webpack');
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 const vConsolePlugin = require('vconsole-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const packageConfig = require('../package.json')
 
 //项目配置
 const config = require('./config/config')[process.env.NODE_ENV];
@@ -34,7 +36,8 @@ module.exports = {
   },
 
   module: {
-    rules: [{
+    rules: [
+      {
         enforce: 'pre',
         test: /\.(vue|js)$/,
         loader: 'eslint-loader',
@@ -155,9 +158,11 @@ module.exports = {
   //webpack-dev-server开启
   devServer: {
     hot: true,
+    compress: true,
     port: config.port,
     contentBase: config.outputDir,
     // watchContentBase: true, //文件改动将触发整个页面重新加载
+    quiet: true,
     proxy: config.proxy
   },
 
@@ -166,8 +171,8 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
 
-    // 将文件同步输出到build
-    new WriteFilePlugin(),
+    // // 将文件同步输出到build
+    // new WriteFilePlugin(),
 
     new webpack.ProvidePlugin({
       Vue: ['vue', 'default'],
@@ -178,9 +183,6 @@ module.exports = {
     new webpack.DefinePlugin({
       __MODE__: JSON.stringify(process.env.NODE_ENV)
     }),
-
-    // // 作用域提升，优化模块闭包的包裹数量，减少bundle的体积
-    // new webpack.optimize.ModuleConcatenationPlugin(),
 
     //稳定moduleId，避免引入了一个新模块后，导致模块ID变更使得vender和common的hash变化缓存失效
     new webpack.NamedModulesPlugin(),
@@ -193,13 +195,6 @@ module.exports = {
       }
 
       return chunk.mapModules(m => path.relative(m.context, m.request)).join("_");
-    }),
-
-    // 抽取通用代码
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common',
-      chunks,
-      minChunks: 2
     }),
 
     //指导webpack打包业务代码时，使用预先打包好的vender.dll.js
@@ -217,6 +212,28 @@ module.exports = {
 
     // 允许错误不打断程序
     new webpack.NoEmitOnErrorsPlugin(),
+
+    new FriendlyErrorsPlugin({
+      compilationSuccessInfo: {
+        messages: [`Your application is running here: http://${config.host}:${config.port}`],
+      },
+      onErrors: () => {
+        const notifier = require('node-notifier')
+
+        return (severity, errors) => {
+          if (severity !== 'error') return
+
+          const error = errors[0]
+          const filename = error.file && error.file.split('!').pop()
+
+          notifier.notify({
+            title: packageConfig.name,
+            message: severity + ': ' + error.name,
+            subtitle: filename || ''
+          })
+        }
+      }
+    }),
 
     new vConsolePlugin({
       enable: true
