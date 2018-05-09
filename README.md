@@ -3,7 +3,7 @@
 ## 一、技术栈
 
 - [x] [Webpack](https://webpack.github.io)
-- [x] [Vue（class style）]
+- [x] [Vue(class style)]
 (https://facebook.github.io/react/)
 - [x] [RxJS](http://cn.rx.js.org/)
 - [x] [ES6](http://es6.ruanyifeng.com/)
