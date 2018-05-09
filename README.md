@@ -3,7 +3,7 @@
 ## 一、技术栈
 
 - [x] [Webpack](https://webpack.github.io)
-- [x] [Vue(class style)](https://facebook.github.io/react/)
+- [x] [Vue(class style)](https://cn.vuejs.org/)
 - [x] [RxJS](http://cn.rx.js.org/)
 - [x] [ES6](http://es6.ruanyifeng.com/)
 - [x] [Babel](https://babeljs.io/)
@@ -88,13 +88,6 @@ $ npm run start # 会根据依赖的增减判断是否需要重新创建dll文�
 
 ```
 $ npm run prod
-```
-
-#### 3. 可进入bin文件夹下执行脚本打包，使用scp发送至测试服务器（自行编写）
-
-```
-$ cd bin
-$ sh deploy.sh (./deploy.sh 需要修改该文件的权限为可执行)
 ```
 
 ### 移动端适配方案
