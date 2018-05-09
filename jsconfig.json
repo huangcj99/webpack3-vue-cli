@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "baseUrl": "./src",
+    // webpack配置的alias路径可提示（仅支持js文件）
+    "paths": {
+      "rx": [
+        "../node_modules/rxjs/Rx"
+      ],
+      "components/*": [
+        "components/*"
+      ],
+      "libs/*": [
+        "libs/*"
+      ]
+    }
+  },
+  "include": [
+    "src/"
+  ]
+}

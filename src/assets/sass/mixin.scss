@@ -43,7 +43,7 @@
   background-size: $size;
 }
 
-/* 增加05px的底部细线 */
+/* 增加0.5px的底部细线 */
 @mixin setOneHalfOfOnePixelBorderBottom($color: #eee, $position: relative) {
   position: $position;
 

@@ -1,11 +1,19 @@
 <template>
-  <div>test-component</div>
+  <div>
+    <div>{{ name }}</div>
+    <div>{{ age }}</div>
+  </div>
 </template>
 
 <script>
 /* global Vue Component */
 
-@Component
+@Component({
+  props: [
+    'name',
+    'age'
+  ]
+})
 export default class TestComponent extends Vue {}
 </script>
 

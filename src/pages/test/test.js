@@ -1,3 +1,5 @@
+/* global Vue */
+
 // style import
 import 'assets/css/reset.css'
 import './test.scss'
@@ -8,7 +10,6 @@ import 'plugin/axios'
 // components import
 import App from './test.vue'
 
-/* global Vue */
 Vue.config.productionTip = false
 
 /* eslint no-new: "off" */

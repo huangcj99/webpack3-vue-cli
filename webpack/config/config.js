@@ -2,7 +2,7 @@ const path = require('path');
 
 // 研发/测试/线上构建配置项
 const config = {
-  development: {
+  dev: {
     host: 'localhost',
     port: 9001,
     outputDir: path.join(__dirname, '../../build'),

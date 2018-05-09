@@ -171,8 +171,8 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
 
-    // // 将文件同步输出到build
-    // new WriteFilePlugin(),
+    // 将文件同步输出到build
+    new WriteFilePlugin(),
 
     new webpack.ProvidePlugin({
       Vue: ['vue', 'default'],
