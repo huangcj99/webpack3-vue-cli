@@ -90,6 +90,16 @@ $ npm run start # 会根据依赖的增减判断是否需要重新创建dll文�
 $ npm run prod
 ```
 
+### 多入口文件规范
+
+js文件名称需要与它的上一级目录名字一样，html文件与js入口处于同一目录下(html文件名与js文件名相同)，用于匹配入口，例（下面几种类型的文件分类）： 
+
+1、page/test/test.html与page/test/test.js
+
+2、page/test/a/a.html与page/test/a/a.js
+
+3、page/test/b/b.html与page/test/b/b.js
+
 ### 移动端适配方案
 
 #### 使用vw单位做适配（微信端支持度不错）
@@ -103,6 +113,29 @@ $ npm run prod
 2、使用postcss-px-to-viewport对px单位进行转换，1px默认不处理
 
 3、兼容mint-ui
+```
+
+#### 解决1px线在移动端变粗的情况
+
+使用postcss-write-svg将svg编译成base64，使用border-image将svg图片设置到边框背景中(具体demo，可查看src/page/test/components/test-svg.vue)
+
+```
+@svg 1px-border {
+  width: 4px;
+  height: 4px;
+  @rect {
+    fill: transparent;  // content设置为透明
+    width: 100%;  // 宽度为4px * 100%
+    height: 100%;  // 高度为4px * 100%
+    stroke-width: 25%;  // 边框宽度 4px * 25%(即1px)
+    stroke: var(--color, black);  // 颜色，默认黑色
+  }
+}
+
+#example {
+  border: 1px solid;
+  border-image: svg(1px-border param(--color red)) 25% stretch;
+}
 ```
 
 ### 引入mint-ui库(按需引入)

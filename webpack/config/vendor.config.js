@@ -4,8 +4,7 @@ const vendorList = [
   'vue',
   'axios',
   'vue-rx',
-  'rx',
-  'vue-class-component'
+  'rx'
 ]
 
 module.exports = vendorList;

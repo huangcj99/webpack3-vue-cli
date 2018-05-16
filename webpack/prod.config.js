@@ -139,11 +139,6 @@ module.exports = {
       __MODE__: JSON.stringify(process.env.NODE_ENV)
     }),
 
-    new webpack.ProvidePlugin({
-      Vue: ['vue', 'default'],
-      Component: ['vue-class-component', 'default']
-    }),
-
     //抽离CSS
     new ExtractTextPlugin('[name].[contenthash].css', {
       allChunks: true
@@ -155,16 +150,6 @@ module.exports = {
     //稳定moduleId
     //避免引入了一个新模块后,导致模块ID变更使得vender和common的hash变化后缓存失效
     new webpack.HashedModuleIdsPlugin(),
-
-    //稳定chunkId
-    //避免异步加载chunk(或减少chunk)，导致的chunkId变化（做持久化缓存）
-    new webpack.NamedChunksPlugin((chunk) => {
-      if (chunk.name) {
-        return chunk.name;
-      }
-
-      return chunk.mapModules(m => path.relative(m.context, m.request)).join("_");
-    }),
 
     //引用数超过2次的模块将抽取到common中
     new webpack.optimize.CommonsChunkPlugin({
