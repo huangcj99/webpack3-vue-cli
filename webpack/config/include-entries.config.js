@@ -6,7 +6,7 @@
 const filterEntries = [
   'all',
 
-  // 'test/',
+  // 'test-postcss/',
 ];
 
 module.exports = filterEntries;

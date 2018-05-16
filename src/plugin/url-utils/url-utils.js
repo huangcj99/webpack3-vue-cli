@@ -3,7 +3,7 @@
  * @param  {string} name 需要获取的参数key值
  * @return {[type]}      [description]
  */
-var getUrlParams = function (name, search) {
+const getUrlParams = function (name, search) {
   search = (search || window.location.search).match(/\?.*(?=\b|#)/);
 
   search && (search = search[0].replace(/^\?/, ''));
@@ -42,7 +42,7 @@ var getUrlParams = function (name, search) {
  *
  * @return   {String}                          注入参数后的url
  */
-var fillParams = function (params, url, withouts) {
+const fillParams = function (params, url, withouts) {
   url = url || window.location.href;
 
   var urlPairs = url.split('#'),
@@ -76,14 +76,13 @@ var fillParams = function (params, url, withouts) {
   return re;
 };
 
-
 /**
  * 判断key是否在数组中
  * @param    {[type]}                           arr [description]
  * @param    {[type]}                           key [description]
  * @return   {[type]}                               [description]
  */
-var indexOfArray = function (arr, key) {
+const indexOfArray = function (arr, key) {
   arr = arr || [];
   for (var i = 0, len = arr.length; i < len; i++) {
     if (arr[i] === key) {
@@ -94,37 +93,10 @@ var indexOfArray = function (arr, key) {
   return -1;
 };
 
-var fillProtocol = function (url, protocol) {
+const fillProtocol = function (url, protocol) {
   if (url.indexOf('//') === 0) {
     url = protocol.indexOf(':') === -1 ? protocol + ':' + url : protocol + url;
   }
-
-  return url;
-};
-
-/**
- * 替换占位符 支持:id 和 {id} 两种形式
- * @param    {[type]}                url    [description]
- * @param    {[type]}                params [description]
- * @return   {[type]}                [description]
- */
-
-/*
-*@author amberPeng,针对接口URL中有出现‘:xx‘端口号时，会被替换成undefined。
-*将函数修改成遍历params的key,根据key来替换，没有涉及到的不替换
-*
-*/
-const replacePlaceholder = function (url, params) {
-  for(var val in params){
-    var reg = new RegExp(':([' + val + ']+)','gim');
-    url = url.replace(reg, function () {
-      return params[val];
-    });
-  }
-
-  url = url.replace(/{([^}]+)}/gi, function (match, key) {
-    return params[key];
-  });
 
   return url;
 };
@@ -149,6 +121,5 @@ export default {
   getUrlParams,
   fillParams,
   fillProtocol,
-  replacePlaceholder,
   getUrlKeyArr
-};
+}

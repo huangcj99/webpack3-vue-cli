@@ -1,4 +1,10 @@
 import Vue from 'vue'
-import axiosPlugin from './plugin'
+import createAxios from './axios'
+
+const axiosPlugin = {
+  install: function (Vue, options) {
+    Vue.prototype.$http = createAxios()
+  }
+}
 
 Vue.use(axiosPlugin)
