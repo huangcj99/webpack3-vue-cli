@@ -15,7 +15,7 @@
 ## 二、环境搭建
 ### [Node](https://nodejs.org/) 安装
 
-> 项目基于 Node LTS V6.9.1 版本
+> 项目基于 Node LTS V8.11.1 版本
 
 推荐使用 [nvm](https://github.com/creationix/nvm) 管理 Node 版本
 
@@ -33,7 +33,7 @@ $ git clone git@github.com:smallcatcat-joe/webpack3-vue-cli.git
 ```shell
 ├── bin # 编译部署等脚本
 |
-├── build # 编译输出
+├── public # 编译输出
 |
 ├── src # 源文件目录
 |   ├── assets # 网站公共资源以及全局css
@@ -59,13 +59,15 @@ $ git clone git@github.com:smallcatcat-joe/webpack3-vue-cli.git
 ├── webpack
 |   ├── config
 |   |      ├── config.js # 开发/线上配置，以及开发代理接口配置
+|   |      ├── include-entries.config.js # 开发时，入口过滤，减少编译入口加快速度
 |   |      ├── postcss.config.js # postcss插件配置
-|   |      ├── resolve.config.js # webpack resolve配置
+|   |      ├── render-loading.js # 预编译loading图到html
 |   |      ├── script_components.config.js # 配置外链js的src路径
 |   |      ├── utils.js # 多入口html模板装配
-|   |      ├── vendor.config.js # 线上打包的vendor列表
+|   |      ├── split-chunks.config.js # chunks划分
 |   |
 |   ├── dll.config.js #  用于打包开发vendor.dll.js的配置文件(本地开发时，避免重复编译vendor，节省时间)
+|   ├── base.config.js # 基础配置
 |   ├── dev.config.js # 本地开发配置
 |   ├── test.config.js # 测试配置
 |   ├── prod.config.js # 线上配置
@@ -160,7 +162,7 @@ $ npm run lint
 
 2.在迭代的时候引入的模块(不常用，但是需要打包的，统一打包到common中)
 
-注：需要打进vender包的库，可在vender.config.js文件中配置，此方案vendor打包的库版本最好在package.json设为指定版本（版本变更可能会导致vendor hash值变化）
+注：需要打进vender包的库，可在split-chunks.config.js文件中配置，此方案vendor打包的库版本最好在package.json设为指定版本（版本变更可能会导致vendor hash值变化）
 ```
 
 ### script_components配置
