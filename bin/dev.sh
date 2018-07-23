@@ -2,7 +2,7 @@
 
 rootPath=`pwd`
 packagePath=${rootPath}'/package.json'
-dllValidatePath=${rootPath}'/build/vendor.dll.validate.txt'
+dllValidatePath=${rootPath}'/public/vendor.dll.validate.txt'
 
 ### 读取package.json的dependencies与devDependencies对应的行数
 dependenciesRow=`grep -n "dependencies" $packagePath | cut  -d  ":"  -f  1`
@@ -28,8 +28,8 @@ if [ -e $dllValidatePath ]; then
   fi
 
 else
-  rm -rf build
-  mkdir build
+  rm -rf public
+  mkdir public
   touch $dllValidatePath
   echo $rows > $dllValidatePath
   npm run dll

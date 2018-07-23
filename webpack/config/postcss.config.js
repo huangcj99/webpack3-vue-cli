@@ -7,12 +7,12 @@ const postcssConfig = [
    * 可以用于绘制固定比例的容器
    * demo: src/test/components/test-aspect-ratio.vue
    */
-  require("postcss-aspect-ratio-mini")(),
+  require('postcss-aspect-ratio-mini')(),
   /**
    * 解决移动端1px线变粗的问题， 不支持圆角， 圆角可以用transform和伪类实现
    * demo: src/test/components/test-svg.vue
    */
-  require("postcss-write-svg")({
+  require('postcss-write-svg')({
     utf8: false
   }),
   /**

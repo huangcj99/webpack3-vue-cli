@@ -1,5 +1,5 @@
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 /* 清除浮动 */
@@ -32,7 +32,12 @@
   height: 100%;
 }
 
+/* 自定义属性 */
 /* color */
+[c-fff] {
+  color: #fff;
+}
+
 [c-333] {
   color: #333;
 }
@@ -53,12 +58,20 @@
   color: #2e2e2e;
 }
 
+[c-ffc032] {
+  color: #ffc032;
+}
+
 /* font-weight */
 [fw-300] {
   font-weight: 300;
 }
 
 /* font-size */
+[fz-13] {
+  font-size: 13px;
+}
+
 [fz-14] {
   font-size: 14px;
 }
@@ -67,6 +80,36 @@
   font-size: 16px;
 }
 
+[fz-18] {
+  font-size: 18px;
+}
+
+[fz-24] {
+  font-size: 24px;
+}
+
 [fz-30] {
   font-size: 30px;
 }
+
+[fz-48] {
+  font-size: 48px;
+}
+
+/* background-color */
+[bgc-fff] {
+  background-color: #fff;
+}
+
+[bgc-f7f7f7] {
+  background-color: #f7f7f7;
+}
+
+[bgc-2e2e2e] {
+  background-color: #2e2e2e;
+}
+
+[bgc-cfcfcf] {
+  background-color: #cfcfcf;
+}
+

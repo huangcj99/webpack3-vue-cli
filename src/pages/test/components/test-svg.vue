@@ -26,23 +26,7 @@ export default {}
 </script>
 
 <style lang="scss" scoped>
-/*
- * 解决移动端1px线变粗的方法（postcss-write-svg插件编译svg为base64），
- * 使用svg绘制1px对应颜色边框的矩形
- * 
-*/
-@svg 1px-border {
-  width: 4px;
-  height: 4px;
-  @rect {
-    fill: transparent;  // content为透明
-    width: 100%;  // 宽度为4px * 100%
-    height: 100%;  // 高度为4px * 100%
-    stroke-width: 25%;  // 边框宽度 4px * 25%(即1px)
-    stroke: var(--color, black);  // 颜色
-  }
-}
-
+/* svg绘线函数文件路径 src/assets/sass/svg.scss 已通过webpack引入 */
 #real-1px {
   margin: 10px;
   height: 20px;

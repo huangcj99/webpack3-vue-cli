@@ -1,15 +1,15 @@
 #!/bin/bash
 
 rootPath=`pwd`
-buildPath=${rootPath}'/build'
+publicPath=${rootPath}'/public'
 
 ### 无build文件夹则先创建再复制
-if [ ! -d $buildPath ]; then
-    mkdir $buildPath
-    cp -r ./src/script_components/. ./build/script_components
+if [ ! -d $publicPath ]; then
+    mkdir $publicPath
+    cp -r ./src/script_components/. ./public/script_components
   else
-    cp -r ./src/script_components/. ./build/script_components
+    cp -r ./src/script_components/. ./public/script_components
 fi
 
 ### 删除多余文件
-rm -rf ./build/script_components/uglify.config.js
+rm -rf ./public/script_components/uglify.config.js

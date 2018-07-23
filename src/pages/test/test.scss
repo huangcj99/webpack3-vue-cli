@@ -1,0 +1,16 @@
+html {
+  background-color: #f7f7f7;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+}
+
+.test-scss-mixin {
+  height: 50px;
+  line-height: 50px;
+  margin-bottom: 10px;
+  font-size: 20px;
+  @include testMixin()
+}

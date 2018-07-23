@@ -1,230 +1,133 @@
-const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
-const vConsolePlugin = require('vconsole-webpack-plugin');
-const WriteFilePlugin = require('write-file-webpack-plugin');
+const path = require('path')
+const webpack = require('webpack')
+const WebpackMerge = require('webpack-merge')
+const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin')
+const WriteFilePlugin = require('write-file-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const packageConfig = require('../package.json')
+const Notifier = require('node-notifier')
+const vConsolePlugin = require('vconsole-webpack-plugin')
 
-//项目配置
-const config = require('./config/config')[process.env.NODE_ENV];
-const utils = require('./config/utils');
-const postConfig = require('./config/postcss.config');
-const resolveConfig = require('./config/resolve.config.js')
+// 项目配置
+const baseWebpackConfig = require('./base.config')
+const config = require('./config/config')[process.env.NODE_ENV]
+const utils = require('./config/utils')
+const postcssConfig = require('./config/postcss.config')
 
-let entries = utils.getEntry('./src/pages/**/*.js');
-// 过滤不必要修改的入口js，加快编译速度
-entries = utils.filterEntries(entries)
+// 配置入口与html生成模板
+const entries = utils.getFilterEntries('./src/pages/**/*.js', 'filter')
+const pages = utils.getFilterEntries('./src/pages/**/*.html', 'filter')
+const htmlPlugins = utils.getHtmlPlugins(pages, entries)
 
-let pages = utils.getEntry('./src/pages/**/*.html');
-// 过滤不必要修改的html模板，加快编译速度
-pages = utils.filterEntries(pages)
-
-const htmlPlugins = utils.getHtmlPlugins(pages, entries);
-const chunks = Object.keys(entries);
-
-module.exports = {
+module.exports = WebpackMerge(baseWebpackConfig, {
   devtool: '#cheap-module-eval-source-map',
 
   entry: entries,
 
-  output: {
-    path: config.outputDir,
-    filename: '[name].js',
-    chunkFilename: '[name].chunk.js',
-    publicPath: config.publicPath
+  // webpack-dev-server开启
+  devServer: {
+    port: config.port,
+    contentBase: config.outputDir,
+    watchContentBase: true, // 文件改动将触发整个页面重新加载
+    quiet: true,
+    proxy: config.proxy
   },
 
   module: {
     rules: [
       {
-        enforce: 'pre',
-        test: /\.(vue|js)$/,
-        loader: 'eslint-loader',
-        exclude: /node_modules/
-      },
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          loaders: {
-            css: 'vue-style-loader?sourceMap!css-loader?sourceMap',
-            scss: [
-              'vue-style-loader?sourceMap',
-              'css-loader?sourceMap',
-              'sass-loader?sourceMap',
-              {
-                // 在vue文件中不需要@import来引入scss文件就可使用mixin.scss中的全局变量与mixin
-                loader: 'sass-resources-loader',
-                options: {
-                  resources: path.resolve(__dirname, '../src/assets/sass/mixin.scss')
-                }
-              }
-            ]
-          },
-          postcss: postConfig
-        }
-      },
-      {
-        test: /\.js$/,
-        use: [
-          'babel-loader'
-        ],
-        include: [
-          path.join(__dirname, '../src')
-        ]
-      },
-      {
         test: /\.css$/,
-        exclude: /node_modules/,
-        use: [{
-            loader: 'style-loader',
-            options: {
-              sourceMap: true
-            }
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true
-            }
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              ident: 'postcss',
-              plugins: postConfig,
-              sourceMap: true
-            }
-          }
-        ]
-      },
-      {
-        test: /\.css$/,
-        include: /node_modules/,
+        include: /(node_modules|assets)/,
         use: [
-          'style-loader', 'css-loader'
+          'style-loader', 
+          'css-loader'
         ]
       },
       {
         test: /\.scss/,
         exclude: /node_modules/,
-        use: [{
-            loader: 'style-loader',
-            options: {
-              sourceMap: true
-            }
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true
-            }
-          },
+        use: [
+          'style-loader?sourceMap',
+          'css-loader?sourceMap',
           {
             loader: 'postcss-loader',
             options: {
               ident: 'postcss',
-              plugins: postConfig,
+              plugins: postcssConfig,
               sourceMap: true
             }
           },
+          'sass-loader?sourceMap',
           {
-            loader: 'sass-loader',
+            // 在scss文件中不需要@import来引入scss文件就可使用mixin.scss中的全局变量与mixin
+            loader: 'sass-resources-loader?sourceMap',
             options: {
-              sourceMap: true
+              resources: [
+                path.resolve(__dirname, '../src/assets/sass/mixin.scss'),
+                path.resolve(__dirname, '../src/assets/sass/svg.scss')
+              ]
             }
           }
         ]
       },
-      {
-        test: /\.(png|jpe?g|gif|svg)(\?\S*)?$/,
-        use: [{
-          loader: 'url-loader',
-          options: {
-            limit: 10000,
-            name: 'img/[name].[hash:7].[ext]'
-          }
-        }]
-      },
-      {
-        test: /\.ico$/,
-        loader: 'file-loader?name=[name].[ext]'
-      }
     ]
-
   },
-
-  //webpack-dev-server开启
-  devServer: {
-    hot: true,
-    compress: true,
-    port: config.port,
-    contentBase: config.outputDir,
-    // watchContentBase: true, //文件改动将触发整个页面重新加载
-    quiet: true,
-    proxy: config.proxy
-  },
-
-  resolve: resolveConfig,
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-
-    // 将文件同步输出到build
+    // 将文件同步输出到public
     new WriteFilePlugin(),
 
-    //定义环境变量
+    // 定义环境变量
     new webpack.DefinePlugin({
       __MODE__: JSON.stringify(process.env.NODE_ENV)
     }),
 
-    //稳定moduleId，避免引入了一个新模块后，导致模块ID变更使得vender和common的hash变化缓存失效
+    // 稳定moduleId，避免引入了一个新模块后，导致模块ID变更使得vender和common的hash变化缓存失效
     new webpack.NamedModulesPlugin(),
 
-    //指导webpack打包业务代码时，使用预先打包好的vender.dll.js
+    new webpack.NamedChunksPlugin((chunk) => {
+      if (chunk.name) {
+        return chunk.name
+      }
+
+      return chunk.mapModules(m => path.relative(m.context, m.request)).join("_");
+    }),
+
+    // 指导webpack打包业务代码时，使用预先打包好的vender.dll.js
     new webpack.DllReferencePlugin({
       context: __dirname,
-      manifest: require('../build/vendor-manifest.json'),
+      manifest: require('../public/vendor-manifest.json'),
     }),
-
-    //给每一个入口添加打包好的vender.dll.js
-    new HtmlWebpackIncludeAssetsPlugin({
-      assets: ['vendor.dll.js'],
-      append: false, //在body尾部的第一条引入
-      hash: true
-    }),
-
-    // 允许错误不打断程序
-    new webpack.NoEmitOnErrorsPlugin(),
 
     new FriendlyErrorsPlugin({
       compilationSuccessInfo: {
-        messages: [`Your application is running here: http://${config.host}:${config.port}`],
+        messages: [`Your application is running here: http://${config.host}:${config.port}`]
       },
       onErrors: () => {
-        const notifier = require('node-notifier')
-
-        return (severity, errors) => {
-          if (severity !== 'error') return
-
+        return (serverity, errors) => {
           const error = errors[0]
-          const filename = error.file && error.file.split('!').pop()
+          const filename = error.file && error.file.split('!').pop
 
-          notifier.notify({
-            title: packageConfig.name,
-            message: severity + ': ' + error.name,
+          Notifier.notify({
+            title: '',
+            message: serverity + ':' + error.name,
             subtitle: filename || ''
           })
         }
       }
     }),
-
+    
     new vConsolePlugin({
       enable: true
     }),
 
-    //html-Templlate
-    ...htmlPlugins
+    // html-Templlate
+    ...htmlPlugins,
+
+    // 给每一个入口添加打包好的vender.dll.js
+    new HtmlWebpackIncludeAssetsPlugin({
+      assets: ['vendor.dll.js'],
+      append: false, // 在body尾部的第一条引入
+      hash: true
+    })
   ]
-};
+});

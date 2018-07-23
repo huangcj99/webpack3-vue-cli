@@ -3,8 +3,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
     <title>test</title>
+    <%= htmlWebpackPlugin.options.loading.css %>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <%= htmlWebpackPlugin.options.loading.html %>
+    </div>
+
+    <script src="<%= htmlWebpackPlugin.options.components.wxjssdk %>"></script>
   </body>
 </html>

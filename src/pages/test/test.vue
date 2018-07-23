@@ -15,7 +15,7 @@ import TestAspectRatio from './components/test-aspect-ratio'
 export default {
   components: {
     TestSvg,
-    TestAspectRatio
+    TestAspectRatio,
   },
   props: {},
   data () {

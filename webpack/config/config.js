@@ -1,29 +1,40 @@
-const path = require('path');
+const path = require('path')
+
+// 输出路径
+const outputDirPath = path.join(__dirname, '../../public')
+// 输出资源的前缀
+const publicPath = '/'
 
 // 研发/测试/线上构建配置项
 const config = {
-  dev: {
+  development: {
     host: 'localhost',
-    port: 9001,
-    outputDir: path.join(__dirname, '../../build'),
-    publicPath: '/',
+    port: 9000,
+    outputDir: outputDirPath,
+    publicPath: publicPath,
+    filename: '[name].js',
+    chunkFilename: '[name].chunk.js',
     proxy: {
       '/api/**': {
-        target: 'http://dev.api.cer.dingdingyisheng.mobi',
+        target: '', // 服务器地址
         changeOrigin: true
       }
     }
   },
 
   test: {
-    outputDir: path.join(__dirname, '../../build'),
-    publicPath: '/'
+    outputDir: outputDirPath,
+    publicPath: publicPath,
+    filename: '[name].[chunkhash].js',
+    chunkFilename: '[name].[chunkhash].chunk.js'
   },
 
   production: {
-    outputDir: path.join(__dirname, '../../build'),
-    publicPath: '/'
+    outputDir: outputDirPath,
+    publicPath: publicPath,
+    filename: '[name].[chunkhash].js',
+    chunkFilename: '[name].[chunkhash].chunk.js'
   }
 };
 
-module.exports = config;
+module.exports = config
