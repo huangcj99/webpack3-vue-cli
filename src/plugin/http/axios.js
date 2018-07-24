@@ -1,5 +1,4 @@
 import {
-  Toast,
   Indicator,
   MessageBox
 } from 'mint-ui'

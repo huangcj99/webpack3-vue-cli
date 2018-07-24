@@ -3,19 +3,22 @@
     <!-- 测试格式化日期, 格式化插件默认都写在format下 -->
     <!-- <div class="time">{{ $dateFormat(new Date()) }}</div> -->
     <!-- 去除注释可查看对应例子 -->
-    <TestSvg></TestSvg>
+    <!-- <TestSvg></TestSvg> -->
     <!-- <TestAspectRatio></TestAspectRatio> -->
+    <TestValidatePlugin></TestValidatePlugin>
   </div>
 </template>
 
 <script>
 import TestSvg from './components/test-svg'
 import TestAspectRatio from './components/test-aspect-ratio'
+import TestValidatePlugin from './components/test-validate-plugin'
 
 export default {
   components: {
     TestSvg,
     TestAspectRatio,
+    TestValidatePlugin
   },
   props: {},
   data () {
@@ -29,7 +32,7 @@ export default {
     console.log(this.$storage.getItem('test-local'))
 
     // 测试axios
-    this.$http.get('/api/base/clinical-project')
+    // this.$http.get('/api/base/clinical-project')
 
     // 测试fillParams，还有方法getUrlParams
     let url = this.$fillParams({

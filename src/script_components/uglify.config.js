@@ -1,6 +1,6 @@
-const webpack = require('webpack');
+const webpack = require('../../../../Library/Caches/typescript/2.9/node_modules/@types/webpack/index');
 const path = require('path');
-const glob = require('glob');
+const glob = require('../../../../Library/Caches/typescript/2.9/node_modules/@types/glob/index');
 const UglifyJsParallelPlugin = require('webpack-uglify-parallel');
 const os = require('os');
 

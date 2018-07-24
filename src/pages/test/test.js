@@ -11,6 +11,7 @@ import 'plugin/format/date-format'
 import 'plugin/storage'
 import 'plugin/url-utils'
 import 'plugin/detect-agent'
+import 'plugin/validate'
  
 Vue.config.productionTip = false
 
