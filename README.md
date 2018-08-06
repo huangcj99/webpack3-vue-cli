@@ -33,7 +33,7 @@ $ git clone git@github.com:smallcatcat-joe/webpack3-vue-cli.git
 ```shell
 ├── bin # 编译部署等脚本
 |
-├── public # 编译输出
+├── build # 编译输出
 |
 ├── src # 源文件目录
 |   ├── assets # 网站公共资源以及全局css
@@ -50,21 +50,22 @@ $ git clone git@github.com:smallcatcat-joe/webpack3-vue-cli.git
 |   |
 |   ├── pages # 页面
 |         ├── test # 页面文件夹
+|               ├── config.js # 用于配置页面chunk依赖和需要内联的chunk
 |               ├── components # 存放vue组件
 |               ├── test.html # 模板html
 |               ├── test.js # js入口
 |               ├── test.scss # scss文件用于非单文件css编写
-|               ├── app.vue # vue组件入口
+|               ├── test.vue # vue组件入口
 |
 ├── webpack
 |   ├── config
 |   |      ├── config.js # 开发/线上配置，以及开发代理接口配置
-|   |      ├── include-entries.config.js # 开发时，入口过滤，减少编译入口加快速度
+|   |      ├── include-entries.config.js # 开发时可配置需要编译的入口
 |   |      ├── postcss.config.js # postcss插件配置
-|   |      ├── render-loading.js # 预编译loading图到html
+|   |      ├── render-loading.js # 预加载loading脚本
 |   |      ├── script_components.config.js # 配置外链js的src路径
 |   |      ├── utils.js # 多入口html模板装配
-|   |      ├── split-chunks.config.js # chunks划分
+|   |      ├── split-chunks.config.js # 可配置多个chunk打包
 |   |
 |   ├── dll.config.js #  用于打包开发vendor.dll.js的配置文件(本地开发时，避免重复编译vendor，节省时间)
 |   ├── base.config.js # 基础配置
@@ -154,15 +155,27 @@ import { MessageBox } from 'mint-ui';
 $ npm run lint
 ```
 
-### 打包方案(适用于持续迭代)
+### 打包方案
 
-#### 将node_modules下的库分成两类
+#### 自由分割模块
+webpack/config/split-chunks.config.js
 ```
-1.基础模块（如：vue，axios等，在增量开发时，此类模块打包成vendor做持久化存储）
+1. 基础模块vendor（如vue，axios）
 
-2.在迭代的时候引入的模块(不常用，但是需要打包的，统一打包到common中)
+2. 单页面基础模块spa-vendor（如：vue-router），
 
-注：需要打进vender包的库，可在split-chunks.config.js文件中配置，此方案vendor打包的库版本最好在package.json设为指定版本（版本变更可能会导致vendor hash值变化）
+3. 除了自由分割的chunk外，其余统一打包进common
+
+注：需要打进vender包的库，vendor打包的库版本最好在package.json设为指定版本（版本变更可能会导致vendor hash值变化）
+```
+每个页面中默认引入manifest、vendor、common、单个页面的业务js，如果需要引入类似自定义的spa-vendor模块，需要在页面下的config文件进行配置，如下：
+```
+let pageConfig = {
+  /**
+   * 不填写则默认匹配 manifest, vendor, common，页面的业务js默认插入
+   */
+  chunks: ['manifest', 'vendor', 'spa-vendor', 'common']
+}
 ```
 
 ### script_components配置
