@@ -10,6 +10,7 @@ const vConsolePlugin = require('vconsole-webpack-plugin')
 
 // 项目配置
 const baseWebpackConfig = require('./base.config')
+const config = require('./config/config')[process.env.NODE_ENV]
 const utils = require('./config/utils')
 const postcssConfig = require('./config/postcss.config')
 const splitChunksConfig = require('./config/split-chunks.config')
@@ -29,7 +30,36 @@ module.exports = WebpackMerge(baseWebpackConfig, {
   entry: entries,
 
   module: {
-    rules: [
+    rules: [{
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          loaders: {
+            css: ExtractTextPlugin.extract({
+              use: ['css-loader'],
+              fallback: 'vue-style-loader'
+            }),
+            scss: ExtractTextPlugin.extract({
+              use: [
+                'css-loader',
+                'sass-loader?outputStyle=expanded',
+                {
+                  // 在vue文件中不需要引入全局的scss就可使用mixin.scss中的全局变量与mixin
+                  loader: 'sass-resources-loader',
+                  options: {
+                    resources: [
+                      path.resolve(__dirname, '../src/assets/sass/mixin.scss'),
+                      path.resolve(__dirname, '../src/assets/sass/svg.scss')
+                    ]
+                  }
+                }
+              ],
+              fallback: 'vue-style-loader'
+            })
+          },
+          postcss: postcssConfig
+        }
+      },
       {
         test: /\.css$/,
         exclude: /node_modules/,
@@ -84,9 +114,7 @@ module.exports = WebpackMerge(baseWebpackConfig, {
 
   plugins: [
     // 定义环境变量
-    new webpack.DefinePlugin({
-      __MODE__: JSON.stringify(process.env.NODE_ENV)
-    }),
+    new webpack.DefinePlugin(config.vars),
 
     // 抽离CSS
     new ExtractTextPlugin('[name].[contenthash].css', {
@@ -100,6 +128,8 @@ module.exports = WebpackMerge(baseWebpackConfig, {
     // 避免引入了一个新模块后,导致模块ID变更使得vender和common的hash变化后缓存失效
     new webpack.HashedModuleIdsPlugin(),
 
+    // 使用这个插件时，异步分割的chunk需要指定webpackChunkName
+    // import(/* webpackChunkName: "healthy" */ 'xxx.vue')
     new webpack.NamedChunksPlugin((chunk) => {
       if (chunk.name) {
         return chunk.name

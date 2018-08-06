@@ -33,13 +33,45 @@ module.exports = WebpackMerge(baseWebpackConfig, {
   },
 
   module: {
-    rules: [
+    rules: [{
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          loaders: {
+            css: 'vue-style-loader?sourceMap!css-loader?sourceMap',
+            scss: [
+              'vue-style-loader?sourceMap',
+              'css-loader?sourceMap',
+              'sass-loader?sourceMap',
+              {
+                // 在vue文件中不需要引入全局的scss就可使用mixin.scss中的全局变量与mixin
+                loader: 'sass-resources-loader',
+                options: {
+                  resources: [
+                    path.resolve(__dirname, '../src/assets/sass/mixin.scss'),
+                    path.resolve(__dirname, '../src/assets/sass/svg.scss')
+                  ]
+                }
+              }
+            ]
+          },
+          postcss: postcssConfig
+        }
+      },
       {
         test: /\.css$/,
         include: /(node_modules|assets)/,
         use: [
-          'style-loader', 
-          'css-loader'
+          'style-loader?sourceMap',
+          'css-loader?sourceMap',
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: postcssConfig,
+              sourceMap: true
+            }
+          }
         ]
       },
       {
@@ -68,7 +100,7 @@ module.exports = WebpackMerge(baseWebpackConfig, {
             }
           }
         ]
-      },
+      }
     ]
   },
 
@@ -77,9 +109,7 @@ module.exports = WebpackMerge(baseWebpackConfig, {
     new WriteFilePlugin(),
 
     // 定义环境变量
-    new webpack.DefinePlugin({
-      __MODE__: JSON.stringify(process.env.NODE_ENV)
-    }),
+    new webpack.DefinePlugin(config.vars),
 
     // 稳定moduleId，避免引入了一个新模块后，导致模块ID变更使得vender和common的hash变化缓存失效
     new webpack.NamedModulesPlugin(),
@@ -115,7 +145,7 @@ module.exports = WebpackMerge(baseWebpackConfig, {
         }
       }
     }),
-    
+
     new vConsolePlugin({
       enable: true
     }),

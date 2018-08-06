@@ -22,7 +22,8 @@
   "dependencies": {
     "axios": "^0.17.1",
     "mint-ui": "^2.2.13",
-    "vue": "2.5.8"
+    "vue": "2.5.8",
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^8.6.0",
@@ -57,7 +58,7 @@
     "style-loader": "^0.21.0",
     "url-loader": "^1.0.1",
     "vconsole-webpack-plugin": "^1.4.0",
-    "vue-loader": "^15.2.4",
+    "vue-loader": "^13.5.0",
     "vue-server-renderer": "^2.5.8",
     "vue-style-loader": "^4.1.0",
     "vue-template-compiler": "2.5.8",

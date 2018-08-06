@@ -38,30 +38,6 @@
   color: #fff;
 }
 
-[c-333] {
-  color: #333;
-}
-
-[c-666] {
-  color: #666;
-}
-
-[c-348cff] {
-  color: #348cff;
-}
-
-[c-999] {
-  color: #999;
-}
-
-[c-2e2e2e] {
-  color: #2e2e2e;
-}
-
-[c-ffc032] {
-  color: #ffc032;
-}
-
 /* font-weight */
 [fw-300] {
   font-weight: 300;
@@ -103,13 +79,5 @@
 
 [bgc-f7f7f7] {
   background-color: #f7f7f7;
-}
-
-[bgc-2e2e2e] {
-  background-color: #2e2e2e;
-}
-
-[bgc-cfcfcf] {
-  background-color: #cfcfcf;
 }
 

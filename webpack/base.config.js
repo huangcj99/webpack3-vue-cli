@@ -2,7 +2,6 @@ const os = require('os')
 const path = require('path')
 const webpack = require('webpack')
 const HappyPack = require('happypack')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 const config = require('./config/config')[process.env.NODE_ENV]
 const happyThreadPool = HappyPack.ThreadPool({
@@ -39,23 +38,13 @@ module.exports = {
   },
 
   module: {
-    rules: [
-      /**
-       * vue-loader @15.x使用方法
-       * 新的vue-loader不再需要在联立css-loader之类的loader
-       * 引入plugin和loader后， 在处理.vue文件后会转交其他配置的loader处理
-       */
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader'
-      },
-      {
+    rules: [{
         test: /\.js$/,
         use: 'happypack/loader?id=babel',
         include: [
           resolve('../src')
         ]
-      }, 
+      },
       {
         test: /\.(png|jpe?g|gif|svg)(\?\S*)?$/,
         use: [{
@@ -84,14 +73,11 @@ module.exports = {
           limit: 10000,
           name: 'media/[name].[hash:7].[ext]'
         }
-      },
+      }
     ]
   },
 
   plugins: [
-    // Vueloader@15 需要引入Vue plugin
-    new VueLoaderPlugin(),
-    
     // 允许错误不打断程序
     new webpack.NoEmitOnErrorsPlugin(),
 

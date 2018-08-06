@@ -19,6 +19,9 @@ const config = {
         target: '', // 服务器地址
         changeOrigin: true
       }
+    },
+    vars: {
+      __MODE__: JSON.stringify('development')
     }
   },
 
@@ -26,15 +29,21 @@ const config = {
     outputDir: outputDirPath,
     publicPath: publicPath,
     filename: '[name].[chunkhash].js',
-    chunkFilename: '[name].[chunkhash].chunk.js'
+    chunkFilename: '[name].[chunkhash].chunk.js',
+    vars: {
+      __MODE__: JSON.stringify('test')
+    }
   },
 
   production: {
     outputDir: outputDirPath,
     publicPath: publicPath,
     filename: '[name].[chunkhash].js',
-    chunkFilename: '[name].[chunkhash].chunk.js'
+    chunkFilename: '[name].[chunkhash].chunk.js',
+    vars: {
+      __MODE__: JSON.stringify('production')
+    }
   }
-};
+}
 
 module.exports = config
