@@ -28,6 +28,9 @@ function createAxios() {
   let instance = null
 
   instance = axios.create({
+    headers: {
+      Authorization: 'asdasdasd'
+    },
     timeout: 1000 * 10
   });
 

@@ -5,7 +5,9 @@
     <!-- 去除注释可查看对应例子 -->
     <!-- <TestSvg></TestSvg> -->
     <!-- <TestAspectRatio></TestAspectRatio> -->
-    <TestValidatePlugin></TestValidatePlugin>
+    <!-- <TestValidatePlugin></TestValidatePlugin> -->
+    <!-- <TestRx6></TestRx6> -->
+    <TestPostcssPlugin></TestPostcssPlugin>
   </div>
 </template>
 
@@ -13,12 +15,16 @@
 import TestSvg from './components/test-svg'
 import TestAspectRatio from './components/test-aspect-ratio'
 import TestValidatePlugin from './components/test-validate-plugin'
+import TestRx6 from './components/test-rx6' 
+import TestPostcssPlugin from './components/test-postcss-auto-set-imageset'
 
 export default {
   components: {
     TestSvg,
     TestAspectRatio,
-    TestValidatePlugin
+    TestValidatePlugin,
+    TestRx6,
+    TestPostcssPlugin
   },
   props: {},
   data () {

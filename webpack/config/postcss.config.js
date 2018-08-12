@@ -1,9 +1,5 @@
 const postcssConfig = [
   /**
-   * browsersList在package.json中设置即可
-   */
-  require('autoprefixer')(),
-  /**
    * 可以用于绘制固定比例的容器
    * demo: src/test/components/test-aspect-ratio.vue
    */
@@ -26,7 +22,12 @@ const postcssConfig = [
     unitPrecision: 3,
     selectorBlackList: ['.ignore'],
     minPixelValue: 1
-  })
+  }),
+  require('postcss-auto-set-imageset')(),
+  /**
+   * browsersList在package.json中设置即可
+   */
+  require('autoprefixer')()
 ]
 
 module.exports = postcssConfig

@@ -5,6 +5,7 @@ import './test.scss'
 // components import
 import Vue from 'vue'
 import App from './test.vue'
+import VueRx from 'vue-rx'
 // plugin import
 import 'plugin/http'
 import 'plugin/format/date-format'
@@ -12,6 +13,8 @@ import 'plugin/storage'
 import 'plugin/url-utils'
 import 'plugin/detect-agent'
 import 'plugin/validate'
+
+Vue.use(VueRx) 
  
 Vue.config.productionTip = false
 

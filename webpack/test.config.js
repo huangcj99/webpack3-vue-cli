@@ -128,16 +128,6 @@ module.exports = WebpackMerge(baseWebpackConfig, {
     // 避免引入了一个新模块后,导致模块ID变更使得vender和common的hash变化后缓存失效
     new webpack.HashedModuleIdsPlugin(),
 
-    // 使用这个插件时，异步分割的chunk需要指定webpackChunkName
-    // import(/* webpackChunkName: "healthy" */ 'xxx.vue')
-    new webpack.NamedChunksPlugin((chunk) => {
-      if (chunk.name) {
-        return chunk.name
-      }
-
-      return chunk.mapModules(m => path.relative(m.context, m.request)).join("_");
-    }),
-
     // 引用数超过2次的模块将抽取到common中
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common',

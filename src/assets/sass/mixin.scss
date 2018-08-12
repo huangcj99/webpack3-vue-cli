@@ -83,6 +83,16 @@
   background-size: $size;
 }
 
+/* 设置需要适配3倍屏的背景图片（对应路径下必须要有3倍图，否则打包时会报错） */
+@mixin set3xBackground($width, $height, $url, $size: contain) {
+  display: inline-block;
+  width: $width;
+  height: $height;
+  background-image: url($url); /* 3x */
+  background-repeat: no-repeat;
+  background-size: $size;
+}
+
 /* 将盒子内的子元素用flex布局进行居中 */
 @mixin setFlex($horizontal: center, $align: center) {
   display: flex;

@@ -82,6 +82,9 @@ $ git clone git@github.com:smallcatcat-joe/webpack3-vue-cli.git
 ```
 $ npm install #安装依赖
 $ npm run start # 会根据依赖的增减判断是否需要重新创建dll文件
+
+// 下面是开启mock服务的方式
+$ npm run start-mock
 ```
 
 注：bin/dev.sh的脚本是根据依赖的增减来判断是否需要重复构建dll文件，如果增加了一个新的依赖，又删除了一个旧的，因为总的依赖数量不变，所以执行npm start后dll不会重新构建，此时可以删除build文件夹，再重新执行npm start(dll文件不要压缩，会导致框架错误提示丢失)

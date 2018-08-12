@@ -4,7 +4,6 @@ const splitChunksConfig = {
     'vue',
     'axios'
   ],
-
   /**
    * 可添加多个包，根据依赖顺序
    */

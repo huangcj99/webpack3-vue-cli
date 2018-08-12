@@ -16,7 +16,7 @@ const config = {
     chunkFilename: '[name].chunk.js',
     proxy: {
       '/api/**': {
-        target: '', // 服务器地址
+        target: 'http://test.weixin.api.renbo.dingdingyisheng.mobi', // 服务器地址
         changeOrigin: true
       }
     },

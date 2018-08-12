@@ -6,6 +6,27 @@ const WriteFilePlugin = require('write-file-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const Notifier = require('node-notifier')
 const vConsolePlugin = require('vconsole-webpack-plugin')
+const mockMiddleware = require('../mock/index')
+
+// 判断是否开启mock服务
+const openMock = () => {
+  let open = false
+  
+  // 查看是否存在--mock参数，若有则开启mock服务器
+  for (let i = 0, arg = ''; arg = process.argv[i++];) {
+    if (process.env['mock']) {
+      open = true
+    }
+  }
+
+  if (open) {
+    return function (app) {
+      mockMiddleware(path.resolve(__dirname, '../mock/config.js'), app)
+    }
+  } else {
+    return function () {}
+  }
+}
 
 // 项目配置
 const baseWebpackConfig = require('./base.config')
@@ -29,7 +50,9 @@ module.exports = WebpackMerge(baseWebpackConfig, {
     contentBase: config.outputDir,
     watchContentBase: true, // 文件改动将触发整个页面重新加载
     quiet: true,
-    proxy: config.proxy
+    proxy: config.proxy,
+    // mock-server
+    before: openMock()
   },
 
   module: {
